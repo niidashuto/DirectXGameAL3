@@ -80,8 +80,8 @@ void Enemy::Update(Model* model) {
 
 	debugText_->SetPos(10, 50);
 	debugText_->Printf(
-		"enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
-		worldTransform_.translation_.z, tribe);
+	  "enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
+	  worldTransform_.translation_.z,tribe);
 
 }
 
@@ -112,7 +112,7 @@ void Enemy::MatUpdate(WorldTransform& worldTransform_) {
 
 	// ‚RˆÚ“®‡¬s—ñ‚ğŒvZ
 	worldTransform_.matWorld_ = Affin::matWorld(
-		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
+	  worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 
 	// e‚Ìs—ñ‚ğŠ|‚¯Z‘ã“ü
 	if (worldTransform_.parent_ != nullptr) {
@@ -205,7 +205,8 @@ void Enemy::Initialize(Model* model) {
 
 	worldTransform_.Initialize();
 
-	worldTransform_.translation_ = { 0, 0, 200 };
+	worldTransform_.translation_ = {0, 0, 200};
+	// worldTransform_.scale_ = {2,2,2};
 
 	//’eXV
 	//	Fire();
