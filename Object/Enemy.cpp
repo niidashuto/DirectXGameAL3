@@ -194,9 +194,14 @@ Vector3 Enemy::GetWorldPosition() {
 /// <summary>
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
-void Enemy::OnCollision() {
-	isDead_ = true;
+void Enemy::OnCollision(Model* model) {
 	player_->AddPoint();
+
+	Vector3 enePos = GetWorldPosition();
+	std::unique_ptr<Food> newFood = std::make_unique<Food>();
+	newFood->Initialize(model, enePos);
+	gameScene_->AddFood(std::move(newFood));
+	isDead_ = true;
 }
 
 void Enemy::SetTexture() {

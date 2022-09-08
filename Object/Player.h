@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "PlayerBullet.h"
-#include "Food.h"
 
 /// <summary>
 /// Ž©ƒLƒƒƒ‰

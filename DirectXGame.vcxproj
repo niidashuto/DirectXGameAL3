@@ -100,11 +100,11 @@
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
-    <ClCompile Include="Food.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Affin.cpp" />
     <ClCompile Include="Object\Enemy.cpp" />
     <ClCompile Include="Object\EnemyBullet.cpp" />
+    <ClCompile Include="Object\Food.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Object\PlayerBullet.cpp" />
     <ClCompile Include="Object\Skydome.cpp" />
@@ -132,7 +132,6 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="camera\RailCamera.h" />
-    <ClInclude Include="Food.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Affin.h" />
     <ClInclude Include="math\MathUtility.h" />
@@ -142,6 +141,7 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="Object\Enemy.h" />
     <ClInclude Include="Object\EnemyBullet.h" />
+    <ClInclude Include="Object\Food.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="Object\PlayerBullet.h" />
     <ClInclude Include="Object\Skydome.h" />

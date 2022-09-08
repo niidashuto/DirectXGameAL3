@@ -162,7 +162,7 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 	}
 
 	debugText_->SetPos(100, 150);
-	debugText_->Printf("%d", playerState);
+	debugText_->Printf("%d", worldTransform_.translation_.z);
 #pragma endregion
 }
 
