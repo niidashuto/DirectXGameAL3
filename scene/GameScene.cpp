@@ -408,7 +408,7 @@ void GameScene::Fire(Vector3 trans, int W) {
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 
 	enemy->SetTribe(W);
-	enemy->Initialize(modelEnemy_, trans);
+	enemy->Initialize(trans);
 	enemy->SetPlayer(player_);
 	enemy->SetGameScene(gameScene_);
 
@@ -701,6 +701,7 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
+
 		case 10:
 		default:
 
@@ -723,32 +724,7 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
-
-			//case 11:
-			//	
-			//		// x座標
-			//		
-			//		float x =20;
-			//		// y座標
-			//		
-			//		float y = 0;
-			//		// z座標
-			//		
-			//		float z = 80;
-			//		// 種類
-			//		
-			//		int w = 1;
-			//		//敵を発生させる
-			//		Fire(Vector3(x, y, z), w);
-
-			//	
-			//	
-
 		}
-
-
-
-
 
 		if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
@@ -763,8 +739,6 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			//コマンドループを抜ける
 			break;
 		}
-
-
 	}
 }
 

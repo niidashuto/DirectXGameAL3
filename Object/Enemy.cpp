@@ -14,7 +14,7 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 
 	//textureHandle_ = TextureManager::Load("ddddog.png");
 	SetTexture();
-	
+
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
@@ -26,6 +26,28 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 
 	//弾更新
 	//	Fire();
+
+	//接近フェーズ初期化
+	ApproachInitialize();
+}
+
+/// <summary>
+/// 初期化
+/// </summary>
+void Enemy::Initialize(Vector3 trans) {
+	// モデル読み込み
+	SetModel();
+
+	// テクスチャ読み込み
+	SetTexture();
+
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
+	debugText_ = DebugText::GetInstance();
+
+	worldTransform_.Initialize();
+
+	worldTransform_.translation_ = trans;
 
 	//接近フェーズ初期化
 	ApproachInitialize();
@@ -157,7 +179,7 @@ void Enemy::Fire(Model* model) {
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Initialize(model, worldTransform_.translation_, velocity);
 
-	
+
 
 	// 弾を登録する
 	//bullets_.push_back(std::move(newBullet));
@@ -174,7 +196,7 @@ void Enemy::ApproachInitialize() {
 
 void Enemy::Tackle(WorldTransform& worldTransform) {
 
-	
+
 }
 
 /// <summary>
@@ -237,5 +259,44 @@ void Enemy::SetTexture() {
 		break;
 	}
 
-	
+
+}
+void Enemy::SetModel() {
+	switch (tribe){
+	case 0:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 1:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 2:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 3:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 4:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 5:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 6:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 7:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 8:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 9:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 10:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	}
+
+
 }
