@@ -9,6 +9,8 @@
 #include <list>
 #include <memory>
 
+#include "Food.h"
+
 // 自機クラスの前方宣言
 class Player;
 class GameScene;
@@ -33,6 +35,7 @@ enum enemyID {
 	Fire,
 	Leave,
 };
+
 class Enemy {
   private:
 	//	ワールド変換データ
@@ -50,6 +53,8 @@ class Enemy {
 
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	Food* food_ = nullptr;
 
 	GameScene* gameScene_ = nullptr;
 
@@ -108,7 +113,7 @@ class Enemy {
 	/// <summary>
 	/// 衝突を検知したら呼び出されるコールバック関数
 	/// </summary>
-	void OnCollision();
+	void OnCollision(Model* model);
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }

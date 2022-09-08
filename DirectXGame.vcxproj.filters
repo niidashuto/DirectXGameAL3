@@ -99,8 +99,11 @@
     <ClCompile Include="Object\Enemy.cpp">
       <Filter>ソース ファイル\object</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Food.cpp">
+      <Filter>ソース ファイル\object</Filter>
     <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +209,8 @@
     <ClInclude Include="Object\Enemy.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
+    <ClInclude Include="Object\Food.h">
+      <Filter>ヘッダー ファイル\object</Filter>
     <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
