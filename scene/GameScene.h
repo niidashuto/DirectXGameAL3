@@ -133,6 +133,7 @@ class GameScene {
 	std::stringstream enemyPopCommands;
 	bool enemyPop = true;
 	float enemyPopTime = true;
+	int eneRand = 0;
 
 	//ワールドトランスフォーム
 	// WorldTransform worldTransform_;

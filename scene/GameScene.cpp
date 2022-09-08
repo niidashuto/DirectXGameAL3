@@ -19,7 +19,7 @@ GameScene::~GameScene() {
 }
 
 
-int a = 3;
+
 void GameScene::Initialize(GameScene* gameScene) {
 	gameScene_ = gameScene;
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -170,9 +170,9 @@ void GameScene::Update() {
 		player_->Update(viewProjection_, modelBullet_);
 
 
-		a = numDist(engine);
+		eneRand = numDist(engine);
 
-		UpdateEnemyPopCommands(a);
+		UpdateEnemyPopCommands(eneRand);
 
 		//弾更新
 		for (std::unique_ptr<Enemy>& enemy : enemy_) {
@@ -701,9 +701,9 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
-
-
 		case 10:
+		default:
+
 			if (word.find("FIRE") == 0) {
 				// x座標
 				getline(line_stream, word, ',');
