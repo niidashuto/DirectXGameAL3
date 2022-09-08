@@ -18,6 +18,8 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 }
 
+
+
 void GameScene::Initialize(GameScene* gameScene) {
 	gameScene_ = gameScene;
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -42,14 +44,14 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 	modelPlayer_ = Model::CreateFromOBJ("body", true);
-	modelEnemy_ = Model::CreateFromOBJ("ene", true);
+	modelEnemy_ = Model::CreateFromOBJ("cube", true);
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);
 
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
-	railCamera_->Initialize(Vector3{0.0f, 0.0f, -80.0f}, Vector3{0.0f, 0.0f, 0.0f});
+	railCamera_->Initialize(Vector3{ 0.0f, 0.0f, -80.0f }, Vector3{ 0.0f, 0.0f, 0.0f });
 
 	player_->SetParent(railCamera_->GetWorldTransform());
 
@@ -57,9 +59,9 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	LoadEnemyPopData();
 
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+	//voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
-	
+
 }
 
 //乱数シード生成器
@@ -68,12 +70,16 @@ std::random_device seed_gem;
 std::mt19937_64 engine(seed_gem());
 //乱数範囲（座標用）
 std::uniform_real_distribution<float> posDist(-30.0f, 30.0f);
+//乱数範囲（摘出現用）
+std::uniform_real_distribution<float> numDist(0.0f, 10.0f);
+
 void GameScene::Update() {
 
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_P) && isDebugcameraActive_ == false) {
 		isDebugcameraActive_ = true;
-	} else if (input_->TriggerKey(DIK_P) && isDebugcameraActive_ == true) {
+	}
+	else if (input_->TriggerKey(DIK_P) && isDebugcameraActive_ == true) {
 		isDebugcameraActive_ = false;
 	}
 
@@ -87,19 +93,20 @@ void GameScene::Update() {
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
 		viewProjection_.TransferMatrix();
-	} else {
+	}
+	else {
 		viewProjection_.UpdateMatrix();
 		viewProjection_.TransferMatrix();
 	}
 
-	
+
 
 	switch (stage) {
 		XINPUT_STATE joyState;
 	case TITLE:
 		if (input_->PushKey(DIK_Q)) {
 			stage = GAME;
-		} 
+		}
 
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 
@@ -109,7 +116,7 @@ void GameScene::Update() {
 			stage = GAME;
 		}
 
-		break;	
+		break;
 
 	case END:
 
@@ -124,7 +131,7 @@ void GameScene::Update() {
 		for (const std::unique_ptr<Enemy>& enemy : enemy_) {
 			enemy->IsDeath();
 		}
-		
+
 
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 
@@ -151,18 +158,21 @@ void GameScene::Update() {
 		break;
 	case GAME:
 		time++;
-		if (player_->IsDead()==true) {
+		if (player_->IsDead() == true) {
 			stage = END;
 		}
 		//デスフラグの立った弾を削除
 		enemyBullets_.remove_if(
-		  [](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
+			[](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 		//デスフラグの立った弾を削除
 		enemy_.remove_if([](std::unique_ptr<Enemy>& enemy) { return enemy->IsDead(); });
 		//自キャラの更新
 		player_->Update(viewProjection_, modelBullet_);
 
-		UpdateEnemyPopCommands();
+
+		eneRand = numDist(engine);
+
+		UpdateEnemyPopCommands(eneRand);
 
 		//弾更新
 		for (std::unique_ptr<Enemy>& enemy : enemy_) {
@@ -179,18 +189,18 @@ void GameScene::Update() {
 
 		railCamera_->Update(player_);
 
-		if (player_->GetPoint() < 2) {
+		if (player_->GetPoint() < 20) {
 			LoadEnemyPopData();
 		}
 
 		if (player_->GetPoint() >= 15) {
 			stage = END;
 		}
-		
+
 
 		break;
 	}
-	
+
 }
 
 void GameScene::Draw() {
@@ -224,13 +234,13 @@ void GameScene::Draw() {
 	case TITLE:
 		debugText_->SetPos(1280 / 2, 300);
 		debugText_->Printf(" OBJECTSHOOTER ");
-		
-		debugText_->SetPos(1280/2, 720/2);
+
+		debugText_->SetPos(1280 / 2, 720 / 2);
 		debugText_->Printf(" PRESS LB BUTTON ");
 
 		break;
 
-		case INFO:
+	case INFO:
 
 		debugText_->SetPos(1280 / 2, 500);
 		debugText_->Printf(" SHOT RB  ");
@@ -241,8 +251,8 @@ void GameScene::Draw() {
 		break;
 
 	case END:
-		    debugText_->SetPos(1280 / 2, 300);
-		    debugText_->Printf(" E N D ");
+		debugText_->SetPos(1280 / 2, 300);
+		debugText_->Printf(" E N D ");
 
 		debugText_->SetPos(1280 / 2, 720 / 2);
 		debugText_->Printf(" PRESS B BUTTON ");
@@ -250,7 +260,7 @@ void GameScene::Draw() {
 		break;
 	case GAME:
 
-		
+
 		//自キャラの描画
 		player_->Draw(railCamera_->GetViewProjection());
 		//弾描画
@@ -278,7 +288,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	
+
 	switch (stage) {
 	case TITLE:
 
@@ -293,7 +303,7 @@ void GameScene::Draw() {
 		player_->DrawUI();
 		break;
 	}
-	
+
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
@@ -324,7 +334,7 @@ void GameScene::CheckAllCollisions() {
 			//敵弾の座標
 			posB = bullet.get()->GetWorldPosition();
 			float a = std::pow(posB.x - posA.x, 2.0f) + std::pow(posB.y - posA.y, 2.0f) +
-			          std::pow(posB.z - posA.z, 2.0f);
+				std::pow(posB.z - posA.z, 2.0f);
 			float lenR = std::pow(bullet.get()->r + player_->r, 2.0);
 
 			// 球と球の交差判定
@@ -347,7 +357,7 @@ void GameScene::CheckAllCollisions() {
 				//自弾の座標
 				posB = bullet->GetWorldPosition();
 				float a = std::pow(posB.x - posA.x, 2.0f) + std::pow(posB.y - posA.y, 2.0f) +
-				          std::pow(posB.z - posA.z, 2.0f);
+					std::pow(posB.z - posA.z, 2.0f);
 				float lenR = std::pow((bullet.get()->r + enemy->r), 2.0);
 				// 球と球の交差判定
 				if (a <= lenR) {
@@ -372,7 +382,7 @@ void GameScene::CheckAllCollisions() {
 				//敵弾の座標
 				posB = eBullet->GetWorldPosition();
 				float a = std::pow(posB.x - posA.x, 2.0f) + std::pow(posB.y - posA.y, 2.0f) +
-				          std::pow(posB.z - posA.z, 2.0f);
+					std::pow(posB.z - posA.z, 2.0f);
 				float lenR = std::pow((eBullet.get()->r + pBullet.get()->r), 2.0);
 
 				// 球と球の交差判定
@@ -392,22 +402,23 @@ void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet) {
 	enemyBullets_.push_back(std::move(enemyBullet));
 }
 
-void GameScene::Fire(Vector3 trans,float W) {
+void GameScene::Fire(Vector3 trans, int W) {
 	assert(player_);
 
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 
+	enemy->SetTribe(W);
 	enemy->Initialize(modelEnemy_, trans);
 	enemy->SetPlayer(player_);
 	enemy->SetGameScene(gameScene_);
-	enemy->SetTribe(W);
+
 	enemy_.push_back(std::move(enemy));
 }
 
 void GameScene::LoadEnemyPopData() {
 	//ファイルを開く
 	std::ifstream file;
-	file.open("Resources/enemyPop.csv");
+	file.open("Resources/enemyState.csv");
 	assert(file.is_open());
 
 	//ファイルの内容を文字列ストリームにコピー
@@ -417,7 +428,7 @@ void GameScene::LoadEnemyPopData() {
 	file.close();
 }
 
-void GameScene::UpdateEnemyPopCommands() {
+void GameScene::UpdateEnemyPopCommands(int num) {
 
 	//待機処理
 	if (enemyPop) {
@@ -445,31 +456,301 @@ void GameScene::UpdateEnemyPopCommands() {
 			//コメント行を飛ばす
 			continue;
 		}
+		/*if ()
+		{
+			break;
+		}*/
 		// POPコマンド
-		if (word.find("TOMATO") == 0) {
-			// x座標
-			getline(line_stream, word, ',');
-			float x = (float)std::atof(word.c_str()) + posDist(engine);
 
-			// y座標
-			getline(line_stream, word, ',');
-			float y = (float)std::atof(word.c_str()) + posDist(engine);
+		switch (num)
+		{
+		case Monkey:
+			if (word.find("MONKEY") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
 
-			// z座標
-			getline(line_stream, word, ',');
-			float z = (float)std::atof(word.c_str());
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
 
-			// 種類
-			getline(line_stream, word, ',');
-			float w = (float)std::atof(word.c_str());
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
 
-			//敵を発生させる
-			Fire(Vector3(x, y, z),w);
+				// 種類
+				int w = Monkey;
+
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Pig:
+
+			if (word.find("PIG") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+
+				// 種類
+				int w = Pig;
+
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+
+		case Cow:
+
+			if (word.find("COW") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+
+				// 種類
+				int w = Cow;
+
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Chicken:
+			if (word.find("CHICKEN") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+
+				// 種類
+				int w = Chicken;
+
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Lettuce:
+			if (word.find("LETTUCE") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = Lettuce;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Tomato:
+			if (word.find("TOMATO") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = Tomato;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Potato:
+			if (word.find("POTATO") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = Potato;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+			}
+			else {
+				break;
+			}
+
+		case Carrot:
+			if (word.find("CARROT") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = Carrot;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+
+		case Onion:
+			if (word.find("ONION") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = Onion;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+
+		case Rice:
+			if (word.find("RICE") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				getline(line_stream, word, ',');
+				int w = Rice;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+		case 10:
+		default:
+
+			if (word.find("FIRE") == 0) {
+				// x座標
+				getline(line_stream, word, ',');
+				float x = (float)std::atof(word.c_str()) + posDist(engine);
+				// y座標
+				getline(line_stream, word, ',');
+				float y = (float)std::atof(word.c_str()) + posDist(engine);
+				// z座標
+				getline(line_stream, word, ',');
+				float z = (float)std::atof(word.c_str());
+				// 種類
+				int w = 10;
+				//敵を発生させる
+				Fire(Vector3(x, y, z), w);
+
+			}
+			else {
+				break;
+			}
+
+			//case 11:
+			//	
+			//		// x座標
+			//		
+			//		float x =20;
+			//		// y座標
+			//		
+			//		float y = 0;
+			//		// z座標
+			//		
+			//		float z = 80;
+			//		// 種類
+			//		
+			//		int w = 1;
+			//		//敵を発生させる
+			//		Fire(Vector3(x, y, z), w);
+
+			//	
+			//	
 
 		}
-		
-		
-		else if (word.find("WAIT") == 0) {
+
+
+
+
+
+		if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
 			//待ち時間
@@ -481,12 +762,9 @@ void GameScene::UpdateEnemyPopCommands() {
 			enemyPopTime = waitTime;
 			//コマンドループを抜ける
 			break;
-		} else if (word.find("END") == 0) {
-			
-			break;
 		}
-		
-		
+
+
 	}
 }
 

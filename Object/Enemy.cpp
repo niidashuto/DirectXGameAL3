@@ -12,8 +12,9 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 	model_ = model;
 	// テクスチャ読み込み
 
-	textureHandle_ = TextureManager::Load("ddddog.png");
-
+	//textureHandle_ = TextureManager::Load("ddddog.png");
+	SetTexture();
+	
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
@@ -80,8 +81,8 @@ void Enemy::Update(Model* model) {
 
 	debugText_->SetPos(10, 50);
 	debugText_->Printf(
-	  "enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
-	  worldTransform_.translation_.z,tribe);
+		"enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
+		worldTransform_.translation_.z, tribe);
 
 }
 
@@ -112,7 +113,7 @@ void Enemy::MatUpdate(WorldTransform& worldTransform_) {
 
 	// ３移動合成行列を計算
 	worldTransform_.matWorld_ = Affin::matWorld(
-	  worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
+		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 
 	// 親の行列を掛け算代入
 	if (worldTransform_.parent_ != nullptr) {
@@ -187,30 +188,43 @@ void Enemy::OnCollision() {
 	player_->AddPoint();
 }
 
-/// <summary>
-/// 初期化
-/// </summary>
-void Enemy::Initialize(Model* model) {
-	// NULLポインタチェック
-	assert(model);
+void Enemy::SetTexture() {
+	switch (tribe)
+	{
+	case 0:
+		textureHandle_ = TextureManager::Load("eneTex/0.png");
+		break;
+	case 1:
+		textureHandle_ = TextureManager::Load("eneTex/1.png");
+		break;
+	case 2:
+		textureHandle_ = TextureManager::Load("eneTex/2.png");
+		break;
+	case 3:
+		textureHandle_ = TextureManager::Load("eneTex/3.png");
+		break;
+	case 4:
+		textureHandle_ = TextureManager::Load("eneTex/4.png");
+		break;
+	case 5:
+		textureHandle_ = TextureManager::Load("eneTex/5.png");
+		break;
+	case 6:
+		textureHandle_ = TextureManager::Load("eneTex/6.png");
+		break;
+	case 7:
+		textureHandle_ = TextureManager::Load("eneTex/7.png");
+		break;
+	case 8:
+		textureHandle_ = TextureManager::Load("eneTex/8.png");
+		break;
+	case 9:
+		textureHandle_ = TextureManager::Load("eneTex/9.png");
+		break;
+	case 10:
+		textureHandle_ = TextureManager::Load("eneTex/10.png");
+		break;
+	}
 
-	model_ = model;
-	// テクスチャ読み込み
-
-	textureHandle_ = TextureManager::Load("ddddog.png");
-
-	// シングルトンインスタンスを取得する
-	input_ = Input::GetInstance();
-	debugText_ = DebugText::GetInstance();
-
-	worldTransform_.Initialize();
-
-	worldTransform_.translation_ = {0, 0, 200};
-	// worldTransform_.scale_ = {2,2,2};
-
-	//弾更新
-	//	Fire();
-
-	//接近フェーズ初期化
-	ApproachInitialize();
+	
 }

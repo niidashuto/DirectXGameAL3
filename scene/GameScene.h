@@ -65,7 +65,7 @@ class GameScene {
 	/// <summary>
 	/// 弾発射
 	/// </summary>
-	void Fire(Vector3 trans, float W);
+	void Fire(Vector3 trans, int W);
 
 	/// <summary>
 	/// 敵弾
@@ -82,7 +82,7 @@ class GameScene {
 	/// <summary>
 	/// 敵発生コマンドの更新
 	/// </summary>
-	void UpdateEnemyPopCommands();
+	void UpdateEnemyPopCommands(int num);
 
 	// リセット
 	void Reset();
@@ -133,6 +133,7 @@ class GameScene {
 	std::stringstream enemyPopCommands;
 	bool enemyPop = true;
 	float enemyPopTime = true;
+	int eneRand = 0;
 
 	//ワールドトランスフォーム
 	// WorldTransform worldTransform_;
