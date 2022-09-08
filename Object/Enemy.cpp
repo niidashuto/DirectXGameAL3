@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameScene.h"
-
+const float PI = 3.1415;
 /// <summary>
 /// ‰Šú‰»
 /// </summary>
@@ -49,7 +49,7 @@ void Enemy::Update(Model* model) {
 
 	case Phase::Approach:
 	default:
-		worldTransform_.translation_.z += -0.05f;
+		worldTransform_.translation_.z += -0.1f;
 		if (worldTransform_.translation_.z < -30.0f) {
 			phase_ = Phase::Leave;
 		}
@@ -74,6 +74,8 @@ void Enemy::Update(Model* model) {
 
 		break;
 	}
+
+
 	//’eXV
 	/*for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
 		bullet->Update();
@@ -135,6 +137,8 @@ void Enemy::Fire(Model* model) {
 	//’e‚Ì‘¬“x
 	const float kBulletSpeed = 0.5f;
 
+	const float angle = cos(PI / 4);
+
 	Vector3 playerPos = player_->GetWorldPosition();
 	Vector3 enePos = GetWorldPosition();
 
@@ -153,6 +157,8 @@ void Enemy::Fire(Model* model) {
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Initialize(model, worldTransform_.translation_, velocity);
 
+	
+
 	// ’e‚ğ“o˜^‚·‚é
 	//bullets_.push_back(std::move(newBullet));
 	gameScene_->AddEnemyBullet(std::move(newBullet));
@@ -164,6 +170,11 @@ void Enemy::Fire(Model* model) {
 void Enemy::ApproachInitialize() {
 	// ”­Ëƒ^ƒCƒ}[‚ğ‰Šú‰»
 	fireTimer_ = kFireInterval;
+}
+
+void Enemy::Tackle(WorldTransform& worldTransform) {
+
+	
 }
 
 /// <summary>
