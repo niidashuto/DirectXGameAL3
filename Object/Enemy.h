@@ -61,7 +61,7 @@ class Enemy {
 	// 発射タイマー
 	int32_t fireTimer_ = 0;
 
-	float tribe = 0;
+	int tribe = 0;
 
   public:
 	// 発射間隔
@@ -103,7 +103,10 @@ class Enemy {
 	void OnCollision();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
-	void SetTribe(float a) { tribe = a; }
+	void SetTribe(int W) { tribe = W; }
+
+	// texture を設定
+	void SetTexture();
 
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }

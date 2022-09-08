@@ -69,6 +69,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (win->ProcessMessage()) {
 			break;
 		}
+		// アプリケーションの終了
+		if (input->PushKey(DIK_ESCAPE)) {
+			break;
+		}
 
 		// 入力関連の毎フレーム処理
 		input->Update();
@@ -88,7 +92,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		primitiveDrawer->Reset();
 		// 描画終了
 		dxCommon->PostDraw();
-		 		
+
+
+
 	}
 
 	// 各種解放
