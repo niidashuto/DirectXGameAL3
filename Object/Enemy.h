@@ -19,7 +19,7 @@ enum class Phase {
 	Leave,    // 離脱
 };
 
-enum enemyID {
+enum class enemyID {
 	Monkey,
 	Pig,
 	Cow,
@@ -31,6 +31,7 @@ enum enemyID {
 	Onion,
 	Rice,
 	Fire,
+	Leave,
 };
 class Enemy {
   private:
@@ -58,6 +59,8 @@ class Enemy {
 	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
 	Phase phase_ = Phase::None;
+
+	enemyID enemyID_ = enemyID::Monkey;
 	// 発射タイマー
 	int32_t fireTimer_ = 0;
 
@@ -87,10 +90,14 @@ class Enemy {
 	/// </summary>
 	void Fire(Model* model);
 
+	
+
 	/// <summary>
 	/// 接近フェーズ初期化
 	/// </summary>
 	void ApproachInitialize();
+
+	void Tackle(WorldTransform& worldTransform);
 
 	/// <summary>
 	/// ワールド座標を取得

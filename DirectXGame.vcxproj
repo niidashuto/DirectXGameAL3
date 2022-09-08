@@ -100,6 +100,7 @@
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="camera\RailCamera.cpp" />
+    <ClCompile Include="Food.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\Affin.cpp" />
     <ClCompile Include="Object\Enemy.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="camera\RailCamera.h" />
+    <ClInclude Include="Food.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\Affin.h" />
     <ClInclude Include="math\MathUtility.h" />

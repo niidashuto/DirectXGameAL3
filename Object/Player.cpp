@@ -39,6 +39,11 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 	// デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
 
+#pragma region 自機のバフ
+	playerState = CheckPlayerBuff(playerState, 0);
+
+#pragma endregion
+
 #pragma region キャラクター移動処理
 
 	// キャラクター移動処理
@@ -151,6 +156,13 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 	debugText_->Printf("crushing : %d", point);
 	debugText_->SetPos(600, 550);
 	debugText_->Printf("   hp    : %d", hp);
+
+	if (buffTimer >= 0) {
+		buffTimer--;
+	}
+
+	debugText_->SetPos(100, 150);
+	debugText_->Printf("%d", playerState);
 #pragma endregion
 }
 
@@ -370,4 +382,40 @@ void Player::Reticle(ViewProjection viewprojection) {
 
 	debugText_->SetPos(100, 100);
 	debugText_->Printf("X:%f,Y:%f", positionReticle.x, positionReticle.y);
+}
+
+int Player::OnFlag(int playerState, int buff) {
+	int result = 0b0000;
+	if (buff && playerState == buff) {
+		return playerState;
+	} else {
+		result += playerState | buff;
+	}
+
+	playerState = result;
+	return playerState;
+}
+
+int Player::OffFlag(int playerState, int buff) {
+	int result = 0b0000;
+	result = playerState & ~buff;
+
+	playerState = result;
+	return playerState;
+}
+
+int Player::CheckPlayerBuff(int playerState, int food) {
+	int result = 0b0000;
+	switch (food)
+	{
+	case 0:
+		result = OnFlag(playerState, attackBuff);
+		buffTimer = 900.0f;
+		break;
+	default:
+		break;
+	}
+
+	playerState = result;
+	return playerState;
 }
