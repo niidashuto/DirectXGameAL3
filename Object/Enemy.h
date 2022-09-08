@@ -42,6 +42,7 @@ class Enemy {
 	WorldTransform worldTransform_;
 	//モデル
 	Model* model_ = nullptr;
+
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
@@ -79,8 +80,8 @@ class Enemy {
 	float r = 1;
 
   public:
-	void Initialize(Model* model);
-	void Initialize(Model* model,Vector3 trans);
+	void Initialize(Vector3 trans);
+	void Initialize(Model* model, Vector3 trans);
 	void Update(Model* model);
 	void Draw(ViewProjection viewProjection);
 	void SetPlayer(Player* player);
@@ -117,6 +118,7 @@ class Enemy {
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }
 
+	void SetModel();
 	// texture を設定
 	void SetTexture();
 
