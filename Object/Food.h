@@ -28,59 +28,61 @@ enum materialID {
 };
 
 /// <summary>
-/// —¿—‘fŞ—pƒNƒ‰ƒX
+/// æ–™ç†ç´ æç”¨ã‚¯ãƒ©ã‚¹
 /// </summary>
 class Food {
 private:
-	// ƒ[ƒ‹ƒh•ÏŠ·ƒf[ƒ^
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ãƒ‡ãƒ¼ã‚¿
 	WorldTransform worldTransform_;
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* model_ = nullptr;
-	// ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	uint32_t textureHandle_ = 0u;
 
-	// ‘¬“x
+	// é€Ÿåº¦
 	Vector3 velocity_ = { 0.0f,0.5f,0.0f };
 
-	// õ–½<frm>
-	static const int32_t kLifeTime = 60 * 5;
-
-	// ƒfƒXƒ^ƒCƒ}[
-	int32_t dethTimer_ = kLifeTime;
-	// ƒfƒXƒtƒ‰ƒO
+	// ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°
 	bool isDead_ = false;
 	int tribe_ = 0;
 	Item* item_ = nullptr;
 
 public:
+	// åŠå¾„
+	float r = 1.0f;
+
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }
+
+	// texture ã‚’è¨­å®š
+	void SetTexture(int tribe);
+	void SetModel(int tribe);
 	void SetTribe(int T);
 	float r = 0.5;
 
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(const Vector3& position, int tribe);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection);
 
 	/// <summary>
-	/// Õ“Ë‚ğŒŸ’m‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+	/// è¡çªã‚’æ¤œçŸ¥ã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	/// </summary>
 	void OnCollision();
 
 	/// <summary>
-	/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+	/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 	/// </summary>
 	Vector3 GetWorldPosition();
 };

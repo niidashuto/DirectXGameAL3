@@ -102,8 +102,6 @@ class Enemy {
 	/// </summary>
 	void Fire(Model* model);
 
-	
-
 	/// <summary>
 	/// 接近フェーズ初期化
 	/// </summary>
@@ -119,16 +117,16 @@ class Enemy {
 	/// <summary>
 	/// 衝突を検知したら呼び出されるコールバック関数
 	/// </summary>
-	void OnCollision(Model* model);
+	void OnCollision();
 
 	void OnCollition2();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }
 
-	void SetModel();
 	// texture を設定
 	void SetTexture();
+	void SetModel();
 
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }

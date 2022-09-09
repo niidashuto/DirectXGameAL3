@@ -6,73 +6,71 @@
 #include <random>
 
 /// <summary>
-/// ‰Šú‰»
+/// åˆæœŸåŒ–
 /// </summary>
-void Food::Initialize(Model* model, const Vector3& position) {
-	// NULLƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN
-	assert(model);
+void Food::Initialize(const Vector3& position, int tribe) {
+	// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
+	SetModel(tribe);
 
-	model_ = model;
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
-	// textureHandle_ = TextureManager::Load("ddddog.png");
-	textureHandle_ = TextureManager::Load("ddddog.png");
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+	SetTexture(tribe);
 
-	// ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
 	worldTransform_.Initialize();
-	// ˆø”‚Åó‚¯æ‚Á‚½‰ŠúÀ•W‚ğƒZƒbƒg
+	// å¼•æ•°ã§å—ã‘å–ã£ãŸåˆæœŸåº§æ¨™ã‚’ã‚»ãƒƒãƒˆ
 	worldTransform_.translation_ = position;
-	//worldTransform_.scale_ = {2, 2, 2};
 
-	// worldTransform_.TransferMatrix();
+	worldTransform_.TransferMatrix();
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Food::Update() {
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Zåº§æ¨™ã«åˆã‚ã›ã€åŠ å·¥ã•ã›ã‚‹
+	if (worldTransform_.translation_.y >= 35) {
+		worldTransform_.translation_.z = -40.0f;
+		velocity_ = { 0.0f, -0.2f,0.0f };
+	}
 
-	// À•W‚ğˆÚ“®‚³‚¹‚é (1ƒtƒŒ[ƒ€•ª‚ÌˆÚ“®—Ê‚ğ‘«‚µ‚±‚Ş)
+	// åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹ (1ãƒ•ãƒ¬ãƒ¼ãƒ åˆ†ã®ç§»å‹•é‡ã‚’è¶³ã—ã“ã‚€)
 	worldTransform_.translation_ += velocity_;
 
-	// s—ñ‚ÌXV
+	// è¡Œåˆ—ã®æ›´æ–°
 	worldTransform_.matWorld_ = Affin::matWorld(
 		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 	worldTransform_.TransferMatrix();
 
-	if (worldTransform_.translation_.y >= 50) {
-		worldTransform_.translation_.z = 0.0f;
-		velocity_ = { 0.0f, -0.2f,0.0f };
-	}
-
-	// ŠÔŒo‰ß‚ÅƒfƒX
+	// æ™‚é–“çµŒéã§ãƒ‡ã‚¹
+	if (worldTransform_.translation_.y <= -30.0f) {
+		isDead_ = true;
 	if (--dethTimer_ <= 0) {
 		//isDead_ = true;
 	}
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Food::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection);
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
 /// <summary>
-/// Õ“Ë‚ğŒŸ’m‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+/// è¡çªã‚’æ¤œçŸ¥ã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 /// </summary>
 void Food::OnCollision() {
 	item_->AddItem(tribe_);
-	// ƒfƒX
+	// ãƒ‡ã‚¹
 	isDead_ = true;
 }
 
 /// <summary>
-/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 /// </summary>
 Vector3 Food::GetWorldPosition() {
-	//
 	Vector3 worldPos;
-	//
+
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
@@ -80,11 +78,84 @@ Vector3 Food::GetWorldPosition() {
 	return worldPos;
 }
 
-//—”ƒV[ƒh¶¬Ší
+void Food::SetTexture(int tribe) {
+	switch (tribe)
+	{
+	case 0:
+		textureHandle_ = TextureManager::Load("materialTex/0.png");
+		break;
+	case 1:
+		textureHandle_ = TextureManager::Load("materialTex/1.png");
+		break;
+	case 2:
+		textureHandle_ = TextureManager::Load("materialTex/2.png");
+		break;
+	case 3:
+		textureHandle_ = TextureManager::Load("materialTex/3.png");
+		break;
+	case 4:
+		textureHandle_ = TextureManager::Load("materialTex/4.png");
+		break;
+	case 5:
+		textureHandle_ = TextureManager::Load("materialTex/5.png");
+		break;
+	case 6:
+		textureHandle_ = TextureManager::Load("materialTex/6.png");
+		break;
+	case 7:
+		textureHandle_ = TextureManager::Load("materialTex/7.png");
+		break;
+	case 8:
+		textureHandle_ = TextureManager::Load("materialTex/8.png");
+		break;
+	case 9:
+		textureHandle_ = TextureManager::Load("materialTex/9.png");
+		break;
+	case 10:
+		textureHandle_ = TextureManager::Load("materialTex/10.png");
+		break;
+	}
+}
+
+void Food::SetModel(int tribe) {
+	switch (tribe) {
+	case 0:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 1:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 2:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 3:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 4:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 5:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 6:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 7:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 8:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 9:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 10:
+		model_ = Model::CreateFromOBJ("cube", true);
+//ä¹±æ•°ã‚·ãƒ¼ãƒ‰ç”Ÿæˆå™¨
 std::random_device seed_gem;
-//ƒƒ‹ƒZƒ“ƒkEƒcƒCƒXƒ^[
+//ãƒ¡ãƒ«ã‚»ãƒ³ãƒŒãƒ»ãƒ„ã‚¤ã‚¹ã‚¿ãƒ¼
 std::mt19937_64 engine(seed_gem());
-//—””ÍˆÍiÀ•W—pj
+//ä¹±æ•°ç¯„å›²ï¼ˆåº§æ¨™ç”¨ï¼‰
 std::uniform_real_distribution<float> posDist(0.0f, 30.0f);
 
 void Food::SetTribe(int tribe) {

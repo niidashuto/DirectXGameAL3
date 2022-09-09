@@ -222,6 +222,7 @@ Vector3 Enemy::GetWorldPosition() {
 /// <summary>
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
+void Enemy::OnCollision() {
 //void Enemy::OnCollision() {
 //	enemyHp -= damageUp;
 //	if (enemyHp <= 0) {
@@ -240,6 +241,7 @@ void Enemy::OnCollision(Model* model) {
 
 	Vector3 enePos = GetWorldPosition();
 	std::unique_ptr<Food> newFood = std::make_unique<Food>();
+	newFood->Initialize(enePos, tribe);
 	newFood->Initialize(model, enePos);
 	newFood->SetTribe(tribe);
 	gameScene_->AddFood(std::move(newFood));

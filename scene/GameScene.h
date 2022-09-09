@@ -25,9 +25,6 @@ enum stage {
 	END
 };
 
-
-
-
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -75,8 +72,6 @@ class GameScene {
 	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 	void AddFood(std::unique_ptr<Food> food);
 
-	
-
 	/// <summary>
 	/// 敵発生データの読み込み
 	/// </summary>
@@ -110,7 +105,6 @@ class GameScene {
 	Model* modelPlayer_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelBullet_ = nullptr;
-	Model* modelFood_ = nullptr;
 
 	//音声再生ハンドル
 	uint32_t voiceHandle_ = 0;
