@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "PlayerBullet.h"
-#include "Food.h"
 
 /// <summary>
 /// 自キャラ
@@ -42,17 +41,6 @@ class Player {
 	// 2Dレティクル用スプライト
 	std::unique_ptr<Sprite> sprite2DReticle_;
 
-	// プレイヤーのバフ状態
-	const int initState = 0b0000;
-
-	int playerState = 0b0000;
-	int attackBuff = 0b1000;
-	int speedBuff = 0b0100;
-	int twoWay = 0b0010;
-	int something = 0b0001;
-
-	float buffTimer = 0.0f;
-
 	int hp = 100;
 	int point = 0;
 	bool isDead = false;
@@ -84,8 +72,6 @@ class Player {
 	/// 回転移動
 	/// </summary>
 	void Rotate();
-
-	void SpeedUpMove();
 
 	/// <summary>
 	/// 行列の計算
@@ -144,11 +130,4 @@ class Player {
 	int GetPoint() { return point; }
 
 	bool IsDead() const { return isDead; }
-
-	/// <summary>
-	/// 状態異常のフラグを立てる,下げる
-	/// </summary>
-	int CheckPlayerBuff(int playerState, int food);
-	int OnFlag(int playerState, int buff);
-	int OffFlag(int playerState, int buff);
 };
