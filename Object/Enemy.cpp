@@ -222,6 +222,7 @@ void Enemy::OnCollision(Model* model) {
 	Vector3 enePos = GetWorldPosition();
 	std::unique_ptr<Food> newFood = std::make_unique<Food>();
 	newFood->Initialize(model, enePos);
+	newFood->SetTribe(tribe);
 	gameScene_->AddFood(std::move(newFood));
 	isDead_ = true;
 }
