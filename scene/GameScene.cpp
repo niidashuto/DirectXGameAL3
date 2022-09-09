@@ -45,6 +45,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 	modelPlayer_ = Model::CreateFromOBJ("body", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
+	modelFood_ = Model::CreateFromOBJ("cube", true);
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);
 
@@ -131,6 +132,9 @@ void GameScene::Update() {
 		for (const std::unique_ptr<Enemy>& enemy : enemy_) {
 			enemy->IsDeath();
 		}
+		for (const std::unique_ptr<Food>& food : foods_) {
+			food->IsDeath();
+		}
 
 
 		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
@@ -166,6 +170,10 @@ void GameScene::Update() {
 			[](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 		//デスフラグの立った弾を削除
 		enemy_.remove_if([](std::unique_ptr<Enemy>& enemy) { return enemy->IsDead(); });
+
+		//デスフラグの立った弾を削除
+		foods_.remove_if([](std::unique_ptr<Food>& food) { return food->IsDead(); });
+
 		//自キャラの更新
 		player_->Update(viewProjection_, modelBullet_);
 
@@ -182,6 +190,10 @@ void GameScene::Update() {
 		//弾更新
 		for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets_) {
 			bullet->Update();
+		}
+
+		for (std::unique_ptr<Food>& food : foods_) {
+			food->Update();
 		}
 
 		//衝突判定
@@ -271,6 +283,10 @@ void GameScene::Draw() {
 		for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets_) {
 			bullet->Draw(railCamera_->GetViewProjection());
 		}
+
+		for (std::unique_ptr<Food>& food : foods_) {
+			food->Draw(railCamera_->GetViewProjection());
+		}
 		debugText_->SetPos(1280 / 2, 600);
 		debugText_->Printf(" SHOT RB  ");
 		break;
@@ -345,6 +361,20 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnCollision();
 			}
 		}
+		for (const std::unique_ptr<Food>& food : foods_) {
+
+			// foodの座標
+			posB = food.get()->GetWorldPosition();
+			float a = std::pow(posB.x - posA.x, 2.0f) + std::pow(posB.y - posA.y, 2.0f) +
+				std::pow(posB.z - posA.z, 2.0f);
+			float lenR = std::pow(food.get()->r + player_->r, 2.0);
+
+			// 球と球の交差判定
+			if (a <= lenR) {
+				// 敵弾の衝突時コールバックを呼び出す
+				food->OnCollision();
+			}
+		}
 	}
 #pragma endregion
 
@@ -362,7 +392,7 @@ void GameScene::CheckAllCollisions() {
 				// 球と球の交差判定
 				if (a <= lenR) {
 					// キャラの衝突時コールバックを呼び出す
-					enemy->OnCollision();
+					enemy->OnCollision(modelFood_);
 					// 弾の衝突時コールバックを呼び出す
 					bullet->OnCollision();
 				}
@@ -396,10 +426,15 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 #pragma endregion
+
 }
 
 void GameScene::AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet) {
 	enemyBullets_.push_back(std::move(enemyBullet));
+}
+
+void GameScene::AddFood(std::unique_ptr<Food> food) {
+	foods_.push_back(std::move(food));
 }
 
 void GameScene::Fire(Vector3 trans, int W) {
@@ -408,7 +443,7 @@ void GameScene::Fire(Vector3 trans, int W) {
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 
 	enemy->SetTribe(W);
-	enemy->Initialize(modelEnemy_, trans);
+	enemy->Initialize(trans);
 	enemy->SetPlayer(player_);
 	enemy->SetGameScene(gameScene_);
 
@@ -701,6 +736,7 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
+
 		case 10:
 		default:
 
@@ -723,32 +759,7 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
-
-			//case 11:
-			//	
-			//		// x座標
-			//		
-			//		float x =20;
-			//		// y座標
-			//		
-			//		float y = 0;
-			//		// z座標
-			//		
-			//		float z = 80;
-			//		// 種類
-			//		
-			//		int w = 1;
-			//		//敵を発生させる
-			//		Fire(Vector3(x, y, z), w);
-
-			//	
-			//	
-
 		}
-
-
-
-
 
 		if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
@@ -763,8 +774,6 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			//コマンドループを抜ける
 			break;
 		}
-
-
 	}
 }
 

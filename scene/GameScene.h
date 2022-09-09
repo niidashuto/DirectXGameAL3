@@ -72,6 +72,7 @@ class GameScene {
 	/// 敵弾
 	/// </summary>
 	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
+	void AddFood(std::unique_ptr<Food> food);
 
 	
 
@@ -108,6 +109,7 @@ class GameScene {
 	Model* modelPlayer_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelBullet_ = nullptr;
+	Model* modelFood_ = nullptr;
 
 	//音声再生ハンドル
 	uint32_t voiceHandle_ = 0;
@@ -130,6 +132,7 @@ class GameScene {
 	// 敵
 	std::list<std::unique_ptr<Enemy>> enemy_;
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets_;
+	std::list<std::unique_ptr<Food>> foods_;
 	GameScene* gameScene_ = nullptr;
 	std::stringstream enemyPopCommands;
 	bool enemyPop = true;

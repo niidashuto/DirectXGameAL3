@@ -9,6 +9,8 @@
 #include <list>
 #include <memory>
 
+#include "Food.h"
+
 // 自機クラスの前方宣言
 class Player;
 class GameScene;
@@ -33,12 +35,14 @@ enum enemyID {
 	Fire,
 	Leave,
 };
+
 class Enemy {
   private:
 	//	ワールド変換データ
 	WorldTransform worldTransform_;
 	//モデル
 	Model* model_ = nullptr;
+
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
@@ -49,6 +53,8 @@ class Enemy {
 
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	Food* food_ = nullptr;
 
 	GameScene* gameScene_ = nullptr;
 
@@ -80,8 +86,8 @@ class Enemy {
 	float r = 1;
 
   public:
-	void Initialize(Model* model);
-	void Initialize(Model* model,Vector3 trans);
+	void Initialize(Vector3 trans);
+	void Initialize(Model* model, Vector3 trans);
 	void Update(Model* model);
 	void Draw(ViewProjection viewProjection);
 	void SetPlayer(Player* player);
@@ -113,13 +119,14 @@ class Enemy {
 	/// <summary>
 	/// 衝突を検知したら呼び出されるコールバック関数
 	/// </summary>
-	void OnCollision();
+	void OnCollision(Model* model);
 
 	void OnCollition2();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }
 
+	void SetModel();
 	// texture を設定
 	void SetTexture();
 

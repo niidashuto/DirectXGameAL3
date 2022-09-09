@@ -3,19 +3,19 @@
 #include "GameScene.h"
 const float PI = 3.1415;
 /// <summary>
-/// ‰Šú‰»
+/// åˆæœŸåŒ–
 /// </summary>
 void Enemy::Initialize(Model* model, Vector3 trans) {
-	// NULLƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN
+	// NULLãƒã‚¤ãƒ³ã‚¿ãƒã‚§ãƒƒã‚¯
 	assert(model);
 
 	model_ = model;
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 
 	//textureHandle_ = TextureManager::Load("ddddog.png");
 	SetTexture();
-	
-	// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚é
+
+	// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -24,10 +24,10 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 	worldTransform_.translation_ = trans;
 	//worldTransform_.scale_ = {2,2,2};
 
-	//’eXV
+	//å¼¾æ›´æ–°
 	//	Fire();
 
-	//Ú‹ßƒtƒF[ƒY‰Šú‰»
+	//æ¥è¿‘ãƒ•ã‚§ãƒ¼ã‚ºåˆæœŸåŒ–
 	ApproachInitialize();
 
 	enemyHp = 5;
@@ -37,17 +37,39 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 	damageUp = 5;
 }
 
+/// <summary>
+/// åˆæœŸåŒ–
+/// </summary>
+void Enemy::Initialize(Vector3 trans) {
+	// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
+	SetModel();
+
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
+	SetTexture();
+
+	// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹
+	input_ = Input::GetInstance();
+	debugText_ = DebugText::GetInstance();
+
+	worldTransform_.Initialize();
+
+	worldTransform_.translation_ = trans;
+
+	//æ¥è¿‘ãƒ•ã‚§ãƒ¼ã‚ºåˆæœŸåŒ–
+	ApproachInitialize();
+}
+
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Enemy::Update(Model* model) {
 	assert(model);
 
-	// ƒfƒXƒtƒ‰ƒO‚Ì—§‚Á‚½’e‚ğíœ
+	// ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°ã®ç«‹ã£ãŸå¼¾ã‚’å‰Šé™¤
 	//bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 
-	//s—ñXV
+	//è¡Œåˆ—æ›´æ–°
 	MatUpdate(worldTransform_);
 
 	switch (phase_) {
@@ -63,9 +85,9 @@ void Enemy::Update(Model* model) {
 		fireTimer_--;
 
 		if (fireTimer_ <= 0) {
-			// ’e‚ğ”­Ë
+			// å¼¾ã‚’ç™ºå°„
 			Fire(model);
-			// ”­Ëƒ^ƒCƒ}[‚ğ‰Šú‰»
+			// ç™ºå°„ã‚¿ã‚¤ãƒãƒ¼ã‚’åˆæœŸåŒ–
 			fireTimer_ = kFireInterval;
 		}
 
@@ -82,7 +104,7 @@ void Enemy::Update(Model* model) {
 	}
 
 
-	//’eXV
+	//å¼¾æ›´æ–°
 	/*for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
 		bullet->Update();
 	}*/
@@ -95,52 +117,52 @@ void Enemy::Update(Model* model) {
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Enemy::Draw(ViewProjection viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	//’eXV
+	//å¼¾æ›´æ–°
 	/*for (std::unique_ptr<EnemyBullet>& bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}*/
 }
 
 /// <summary>
-/// ©ƒLƒƒƒ‰‚ğØ‚è‚Ä‚­‚é
+/// è‡ªã‚­ãƒ£ãƒ©ã‚’å€Ÿã‚Šã¦ãã‚‹
 /// </summary>
 void Enemy::SetPlayer(Player* player) { player_ = player; }
 
 /// <summary>
-/// s—ñXV
+/// è¡Œåˆ—æ›´æ–°
 /// </summary>
 void Enemy::MatUpdate(WorldTransform& worldTransform_) {
 
-	// ƒp[ƒc‚ÌXV
+	// ãƒ‘ãƒ¼ãƒ„ã®æ›´æ–°
 
-	// ‚RˆÚ“®‡¬s—ñ‚ğŒvZ
+	// ï¼“ç§»å‹•åˆæˆè¡Œåˆ—ã‚’è¨ˆç®—
 	worldTransform_.matWorld_ = Affin::matWorld(
 		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 
-	// e‚Ìs—ñ‚ğŠ|‚¯Z‘ã“ü
+	// è¦ªã®è¡Œåˆ—ã‚’æ›ã‘ç®—ä»£å…¥
 	if (worldTransform_.parent_ != nullptr) {
 		worldTransform_.matWorld_ *= worldTransform_.parent_->matWorld_;
 	}
 
-	// s—ñ‚Ì“]‘—
+	// è¡Œåˆ—ã®è»¢é€
 	worldTransform_.TransferMatrix();
 }
 
 /// <summary>
-/// ’e”­Ë
+/// å¼¾ç™ºå°„
 /// </summary>
 void Enemy::Fire(Model* model) {
 
 	assert(player_);
 	assert(model);
 
-	//’e‚Ì‘¬“x
+	//å¼¾ã®é€Ÿåº¦
 	const float kBulletSpeed = 0.5f;
 
 	const float angle = cos(PI / 4);
@@ -156,35 +178,35 @@ void Enemy::Fire(Model* model) {
 
 	Vector3 velocity(nomal.x * kBulletSpeed, nomal.y * kBulletSpeed, nomal.z * kBulletSpeed);
 
-	// ‘¬“xƒxƒNƒgƒ‹‚ğ©‹@‚ÌŒü‚«‚É‡‚í‚¹‚Ä‰ñ“]‚³‚¹‚é
+	// é€Ÿåº¦ãƒ™ã‚¯ãƒˆãƒ«ã‚’è‡ªæ©Ÿã®å‘ãã«åˆã‚ã›ã¦å›è»¢ã•ã›ã‚‹
 	velocity = Affin::VecMat(velocity, worldTransform_.matWorld_);
 
-	// ’e‚ğ¶¬‚µA‰Šú‰»
+	// å¼¾ã‚’ç”Ÿæˆã—ã€åˆæœŸåŒ–
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Initialize(model, worldTransform_.translation_, velocity);
 
-	
 
-	// ’e‚ğ“o˜^‚·‚é
+
+	// å¼¾ã‚’ç™»éŒ²ã™ã‚‹
 	//bullets_.push_back(std::move(newBullet));
 	gameScene_->AddEnemyBullet(std::move(newBullet));
 }
 
 /// <summary>
-/// Ú‹ßƒtƒF[ƒY‰Šú‰»
+/// æ¥è¿‘ãƒ•ã‚§ãƒ¼ã‚ºåˆæœŸåŒ–
 /// </summary>
 void Enemy::ApproachInitialize() {
-	// ”­Ëƒ^ƒCƒ}[‚ğ‰Šú‰»
+	// ç™ºå°„ã‚¿ã‚¤ãƒãƒ¼ã‚’åˆæœŸåŒ–
 	fireTimer_ = kFireInterval;
 }
 
 void Enemy::Tackle(WorldTransform& worldTransform) {
 
-	
+
 }
 
 /// <summary>
-/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 /// </summary>
 Vector3 Enemy::GetWorldPosition() {
 	//
@@ -198,7 +220,7 @@ Vector3 Enemy::GetWorldPosition() {
 }
 
 /// <summary>
-/// Õ“Ë‚ğŒŸ’m‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+/// è¡çªã‚’æ¤œçŸ¥ã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 /// </summary>
 //void Enemy::OnCollision() {
 //	enemyHp -= damageUp;
@@ -213,7 +235,14 @@ void Enemy::OnCollision() {
 	if (enemyHp <= 0) {
 		isDead_ = true;
 	}
+void Enemy::OnCollision(Model* model) {
 	player_->AddPoint();
+
+	Vector3 enePos = GetWorldPosition();
+	std::unique_ptr<Food> newFood = std::make_unique<Food>();
+	newFood->Initialize(model, enePos);
+	gameScene_->AddFood(std::move(newFood));
+	isDead_ = true;
 }
 
 void Enemy::SetTexture() {
@@ -254,5 +283,44 @@ void Enemy::SetTexture() {
 		break;
 	}
 
-	
+
+}
+void Enemy::SetModel() {
+	switch (tribe){
+	case 0:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 1:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 2:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 3:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 4:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 5:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 6:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 7:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 8:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 9:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	case 10:
+		model_ = Model::CreateFromOBJ("cube", true);
+		break;
+	}
+
+
 }
