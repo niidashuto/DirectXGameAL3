@@ -223,26 +223,11 @@ Vector3 Enemy::GetWorldPosition() {
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
 void Enemy::OnCollision() {
-//void Enemy::OnCollision() {
-//	enemyHp -= damageUp;
-//	if (enemyHp <= 0) {
-//		isDead_ = true;
-//	}
-//	player_->AddPoint();
-//}
-
-void Enemy::OnCollision() {
-	enemyHp -= damage;
-	if (enemyHp <= 0) {
-		isDead_ = true;
-	}
-void Enemy::OnCollision(Model* model) {
 	player_->AddPoint();
 
 	Vector3 enePos = GetWorldPosition();
 	std::unique_ptr<Food> newFood = std::make_unique<Food>();
 	newFood->Initialize(enePos, tribe);
-	newFood->Initialize(model, enePos);
 	newFood->SetTribe(tribe);
 	gameScene_->AddFood(std::move(newFood));
 	isDead_ = true;
