@@ -379,3 +379,7 @@ void Player::Reticle(ViewProjection viewprojection) {
 	debugText_->SetPos(100, 100);
 	debugText_->Printf("X:%f,Y:%f", positionReticle.x, positionReticle.y);
 }
+
+void Player::AddItem(int tribe) {
+	
+}

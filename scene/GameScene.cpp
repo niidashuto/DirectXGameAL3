@@ -18,6 +18,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete model_;
 	delete modelSkydome_;
+	delete item_;
 }
 
 
@@ -47,6 +48,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 	modelPlayer_ = Model::CreateFromOBJ("body", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
+	item_ = new Item();
 	// 
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);
@@ -59,6 +61,8 @@ void GameScene::Initialize(GameScene* gameScene) {
 	player_->SetParent(railCamera_->GetWorldTransform());
 
 	skydome_->Initialize(modelSkydome_);
+
+	item_->Initialize();
 
 	LoadEnemyPopData();
 
@@ -373,6 +377,7 @@ void GameScene::CheckAllCollisions() {
 			// 球と球の交差判定
 			if (a <= lenR) {
 				// 敵弾の衝突時コールバックを呼び出す
+				item_->AddItem(food->GetTribe());
 				food->OnCollision();
 			}
 		}

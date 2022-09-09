@@ -1,9 +1,10 @@
 #include "Food.h"
 #include "Affin.h"
 #include <cassert>
-#include "Item.h"
 #include "Enemy.h"
 #include <random>
+
+#include "Player.h"
 
 /// <summary>
 /// 初期化
@@ -14,6 +15,7 @@ void Food::Initialize(const Vector3& position, int tribe) {
 
 	// テクスチャ読み込み
 	SetTexture(tribe);
+	SetTribe(tribe);
 
 	// ワールドトランスフォーム
 	worldTransform_.Initialize();
@@ -44,7 +46,6 @@ void Food::Update() {
 	// 時間経過でデス
 	if (worldTransform_.translation_.y <= -30.0f) {
 		isDead_ = true;
-		//isDead_ = true;
 	}
 }
 
@@ -59,7 +60,7 @@ void Food::Draw(const ViewProjection& viewProjection) {
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
 void Food::OnCollision() {
-	item_->AddItem(tribe_);
+	
 	// デス
 	isDead_ = true;
 }
@@ -165,10 +166,10 @@ void Food::SetTribe(int tribe) {
 	case Chicken:
 		/*if (posDist(engine) <= 15) {
 			tribe_ = toriniku;
-		}
-		if (posDist(engine) > 15) {
-			tribe_ = tamago;
 		}*/
+
+		tribe_ = tamago;
+
 		break;
 	case Lettuce:
 		tribe_ = retasu;
