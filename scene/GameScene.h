@@ -108,7 +108,6 @@ class GameScene {
 	Model* modelPlayer_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelBullet_ = nullptr;
-	Model* modelFood_ = nullptr;
 
 	//音声再生ハンドル
 	uint32_t voiceHandle_ = 0;

@@ -38,24 +38,26 @@ private:
 	// 速度
 	Vector3 velocity_ = { 0.0f,0.5f,0.0f };
 
-	// 寿命<frm>
-	static const int32_t kLifeTime = 60 * 5;
-
-	// デスタイマー
-	int32_t dethTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
 
+
 public:
+	// 半径
+	float r = 1.0f;
+
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }
-	float r = 0.5;
+
+	// texture を設定
+	void SetTexture(int tribe);
+	void SetModel(int tribe);
 
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(const Vector3& position, int tribe);
 
 	/// <summary>
 	/// 更新

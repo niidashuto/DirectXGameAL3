@@ -113,7 +113,7 @@ class Enemy {
 	/// <summary>
 	/// 衝突を検知したら呼び出されるコールバック関数
 	/// </summary>
-	void OnCollision(Model* model);
+	void OnCollision();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }

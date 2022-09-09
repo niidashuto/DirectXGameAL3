@@ -45,7 +45,6 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 	modelPlayer_ = Model::CreateFromOBJ("body", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
-	modelFood_ = Model::CreateFromOBJ("cube", true);
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);
 
@@ -170,7 +169,6 @@ void GameScene::Update() {
 			[](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 		//デスフラグの立った弾を削除
 		enemy_.remove_if([](std::unique_ptr<Enemy>& enemy) { return enemy->IsDead(); });
-
 		//デスフラグの立った弾を削除
 		foods_.remove_if([](std::unique_ptr<Food>& food) { return food->IsDead(); });
 
@@ -283,7 +281,7 @@ void GameScene::Draw() {
 		for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets_) {
 			bullet->Draw(railCamera_->GetViewProjection());
 		}
-
+		// 
 		for (std::unique_ptr<Food>& food : foods_) {
 			food->Draw(railCamera_->GetViewProjection());
 		}
@@ -392,7 +390,7 @@ void GameScene::CheckAllCollisions() {
 				// 球と球の交差判定
 				if (a <= lenR) {
 					// キャラの衝突時コールバックを呼び出す
-					enemy->OnCollision(modelFood_);
+					enemy->OnCollision();
 					// 弾の衝突時コールバックを呼び出す
 					bullet->OnCollision();
 				}

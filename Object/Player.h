@@ -57,7 +57,7 @@ class Player {
 	bool isDead = false;
 
   public:
-	float r = 1;
+	float r = 1.0f;
 
   public:
 	/// <summary>
