@@ -29,6 +29,12 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 
 	//接近フェーズ初期化
 	ApproachInitialize();
+
+	enemyHp = 5;
+
+	damage = 1;
+
+	damageUp = 5;
 }
 
 
@@ -194,8 +200,19 @@ Vector3 Enemy::GetWorldPosition() {
 /// <summary>
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
+//void Enemy::OnCollision() {
+//	enemyHp -= damageUp;
+//	if (enemyHp <= 0) {
+//		isDead_ = true;
+//	}
+//	player_->AddPoint();
+//}
+
 void Enemy::OnCollision() {
-	isDead_ = true;
+	enemyHp -= damage;
+	if (enemyHp <= 0) {
+		isDead_ = true;
+	}
 	player_->AddPoint();
 }
 

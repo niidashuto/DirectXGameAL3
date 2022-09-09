@@ -85,6 +85,8 @@ class Player {
 	/// </summary>
 	void Rotate();
 
+	void SpeedUpMove();
+
 	/// <summary>
 	/// s—ñ‚ÌŒvZ
 	/// </summary>
