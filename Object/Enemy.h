@@ -61,6 +61,8 @@ class Enemy {
 	//デスフラグ
 	bool isDead_ = false;
 
+	int enemyHp = 5;
+
 	//弾
 	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 
@@ -71,6 +73,10 @@ class Enemy {
 	int32_t fireTimer_ = 0;
 
 	int tribe = 0;
+
+	int damage = 1;
+
+	int damageUp = 5;
 
   public:
 	// 発射間隔
@@ -114,6 +120,8 @@ class Enemy {
 	/// 衝突を検知したら呼び出されるコールバック関数
 	/// </summary>
 	void OnCollision(Model* model);
+
+	void OnCollition2();
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }

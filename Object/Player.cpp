@@ -1,23 +1,23 @@
 #include "Player.h"
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
-	// NULLƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN
+	// NULLãƒã‚¤ãƒ³ã‚¿ãƒã‚§ãƒƒã‚¯
 	assert(model);
 
 	model_ = model;
 	textureHandle_ = TextureManager::Load("block1.png");
 
-	// 3DƒŒƒeƒBƒNƒ‹‚Ìƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ì‰Šú‰»
+	// 3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®åˆæœŸåŒ–
 	worldTransform3DReticle_.Initialize();
 
-	//ƒXƒvƒ‰ƒCƒg¶¬
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”Ÿæˆ
 	sprite2DReticle_.reset(
 	  Sprite::Create(textureReticle, Vector2{640, 360}, Vector4{1, 1, 1, 1}, Vector2(0.5, 0.5)));
 
 	// worldTransform_.parent_ = &cameraWorldTransform_;
 	Vector3 move(0, 0, 40);
 
-	// ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚·‚é
+	// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—ã™ã‚‹
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
@@ -32,84 +32,79 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Player::Update(ViewProjection viewProjection, Model* model) {
 	assert(model);
-	// ƒfƒXƒtƒ‰ƒO‚Ì—§‚Á‚½’e‚ğíœ
+	// ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°ã®ç«‹ã£ãŸå¼¾ã‚’å‰Šé™¤
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
 
-#pragma region ©‹@‚Ìƒoƒt
-	playerState = CheckPlayerBuff(playerState, 0);
+#pragma region ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç§»å‹•å‡¦ç†
 
-#pragma endregion
-
-#pragma region ƒLƒƒƒ‰ƒNƒ^[ˆÚ“®ˆ—
-
-	// ƒLƒƒƒ‰ƒNƒ^[ˆÚ“®ˆ—
+	// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç§»å‹•å‡¦ç†
 	Move();
 	Rotate();
 
-	//s—ñXV
+	//è¡Œåˆ—æ›´æ–°
 	MatUpdate(worldTransform_);
 
-	//ƒLƒƒƒ‰UŒ‚
+	//ã‚­ãƒ£ãƒ©æ”»æ’ƒ
 	Attack(model);
 
-	//’eXV
+	//å¼¾æ›´æ–°
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
 		bullet->Update();
 	}
 
 	// Reticle(viewProjection);
 
-	// 2DƒŒƒeƒBƒNƒ‹‚ÌƒXƒNƒŠ[ƒ“À•W‚©‚ç3DƒŒƒeƒBƒNƒ‹‚Ìƒ[ƒ‹ƒhÀ•W‚ğŒvZ
+	// 2Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‹ã‚‰3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—
 	{
 		// POINT mousePosition;
-		////ƒ}ƒEƒXÀ•WiƒXƒNƒŠ[ƒ“À•Wj‚ğæ“¾‚·‚é
+		////ãƒã‚¦ã‚¹åº§æ¨™ï¼ˆã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ï¼‰ã‚’å–å¾—ã™ã‚‹
 		// GetCursorPos(&mousePosition);
 
-		////ƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒAÀ•W‚É•ÏŠ·‚·‚é
+		////ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢åº§æ¨™ã«å¤‰æ›ã™ã‚‹
 		// HWND hwnd = WinApp::GetInstance()->GetHwnd();
 		// ScreenToClient(hwnd, &mousePosition);
 
 		// sprite2DReticle_->SetPosition(Vector2(mousePosition.x, mousePosition.y));
 
-		//ƒXƒvƒ‰ƒCƒg‚ÌŒ»İÀ•W‚ğæ“¾
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç¾åœ¨åº§æ¨™ã‚’å–å¾—
 		Vector2 spritePosition = sprite2DReticle_->GetPosition();
 
 		XINPUT_STATE joyState;
 
-		//ƒWƒ‡ƒCƒXƒeƒBƒbƒNó‘Ô
+		//ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯çŠ¶æ…‹
 		if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
 			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
-			//ƒXƒvƒ‰ƒCƒg‚ÌÀ•W•ÏX‚ğ”½‰f
+			//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åº§æ¨™å¤‰æ›´ã‚’åæ˜ 
 			sprite2DReticle_->SetPosition(spritePosition);
 		}
 
-		//ƒrƒ…[ƒ|[ƒgs—ñ
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¡Œåˆ—
 		Matrix4 matViewport = {
 		  640, 0, 0, 0, 0, -360, 0, 0, 0, 0, 1, 0, 640, 360, 0, 1,
 		};
 
-		//ƒrƒ…[ƒ|[ƒgs—ñ
+		//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¡Œåˆ—
 		Matrix4 viewportMat;
 		viewportMat = viewProjection.matView;
 		viewportMat *= viewProjection.matProjection;
 		viewportMat *= matViewport;
-		//‡¬s—ñ‚Ì‹ts—ñ‚ğŒvZ‚·‚é
+		//åˆæˆè¡Œåˆ—ã®é€†è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 		Matrix4 matInverseVPV = MathUtility::Matrix4Inverse(viewportMat);
 
-		//ƒXƒNƒŠ[ƒ“À•W
+		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
 		Vector3 posNear = Vector3(spritePosition.x, spritePosition.y, 0);
 		Vector3 posFar = Vector3(spritePosition.x, spritePosition.y, 1);
 
-		//ƒXƒNƒŠ[ƒ“À•WŒn‚©‚çƒ[ƒ‹ƒhÀ•WŒn‚Ö
+		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ç³»ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã¸
 		posNear = Affin::wDivision(posNear, matInverseVPV);
 		posFar = Affin::wDivision(posFar, matInverseVPV);
 
-		//ƒ}ƒEƒXƒŒƒC‚Ì•ûŒü
+		//ãƒã‚¦ã‚¹ãƒ¬ã‚¤ã®æ–¹å‘
 		Vector3 mouseDirection = posFar;
 		mouseDirection -= posNear;
 		float len = sqrt(
@@ -118,7 +113,7 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 		if (len != 0) {
 			mouseDirection /= len;
 		}
-		//ƒJƒƒ‰‚©‚çÆ€ƒIƒuƒWƒFƒNƒg‚Ì‹——£
+		//ã‚«ãƒ¡ãƒ©ã‹ã‚‰ç…§æº–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è·é›¢
 		const float kDistanceTestObject = 100.0f;
 		Vector3 A = posNear;
 		A += Vector3(
@@ -167,14 +162,14 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Player::Draw(ViewProjection viewProjection) {
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	// model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
-	//’e•`‰æ
+	//å¼¾æç”»
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
@@ -182,40 +177,40 @@ void Player::Draw(ViewProjection viewProjection) {
 
 void Player::MatUpdate(WorldTransform& worldTransform) {
 
-	// ƒp[ƒc‚ÌXV
+	// ãƒ‘ãƒ¼ãƒ„ã®æ›´æ–°
 
-	// ‚RˆÚ“®‡¬s—ñ‚ğŒvZ
+	// ï¼“ç§»å‹•åˆæˆè¡Œåˆ—ã‚’è¨ˆç®—
 	worldTransform_.matWorld_ = Affin::matWorld(
 	  worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 
-	// e‚Ìs—ñ‚ğŠ|‚¯Z‘ã“ü
+	// è¦ªã®è¡Œåˆ—ã‚’æ›ã‘ç®—ä»£å…¥
 
 	worldTransform_.matWorld_ *= worldTransform_.parent_->matWorld_;
 
-	// s—ñ‚Ì“]‘—
+	// è¡Œåˆ—ã®è»¢é€
 	worldTransform_.TransferMatrix();
 }
 
 /// <summary>
-/// “®ì
+/// å‹•ä½œ
 /// </summary>
 void Player::Move() {
-	//ƒLƒƒƒ‰ƒNƒ^[‚ÌˆÚ“®ƒxƒNƒgƒ‹
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 move = {0, 0, 0};
 
-	//ƒQ[ƒ€ƒpƒbƒh‚Ìó‘Ô‚ğ“¾‚é•Ï”iXINPUTj
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’å¾—ã‚‹å¤‰æ•°ï¼ˆXINPUTï¼‰
 	XINPUT_STATE joyState;
-	//ƒWƒ‡ƒCƒXƒeƒBƒbƒNó‘Ôæ“¾
+	//ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯çŠ¶æ…‹å–å¾—
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1;
 		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1;
 	}
 
-	//ˆÚ“®ŒÀŠEÀ•W
+	//ç§»å‹•é™ç•Œåº§æ¨™
 	const float kMoveLimitX = 35;
 	const float kMoveLimitY = 19;
 
-	//”ÍˆÍ‚ğ’´‚¦‚È‚¢ˆ—
+	//ç¯„å›²ã‚’è¶…ãˆãªã„å‡¦ç†
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
@@ -225,19 +220,19 @@ void Player::Move() {
 }
 
 /// <summary>
-/// ‰ñ“]ˆÚ“®
+/// å›è»¢ç§»å‹•
 /// </summary>
 void Player::Rotate() {
 	Vector3 rotate = {0, 0, 0};
 
-	// ‰ñ“]
-	{ // X•ûŒü
+	// å›è»¢
+	{ // Xæ–¹å‘
 		if (input_->PushKey(DIK_Q)) {
 			rotate.x = 1;
 		} else if (input_->PushKey(DIK_E)) {
 			rotate.x = -1;
 		}
-		// Y•ûŒü
+		// Yæ–¹å‘
 		if (input_->PushKey(DIK_1)) {
 			rotate.y = 1;
 		} else if (input_->PushKey(DIK_2)) {
@@ -245,11 +240,11 @@ void Player::Rotate() {
 		}
 	}
 
-	//ˆÚ“®ŒÀŠEÀ•W
+	//ç§»å‹•é™ç•Œåº§æ¨™
 	const float kRotateLimitX = 80;
 	const float kRotateLimitY = 80;
 
-	//”ÍˆÍ‚ğ’´‚¦‚È‚¢ˆ—
+	//ç¯„å›²ã‚’è¶…ãˆãªã„å‡¦ç†
 	worldTransform_.rotation_.x = max(worldTransform_.rotation_.x, -kRotateLimitX);
 	worldTransform_.rotation_.x = min(worldTransform_.rotation_.x, +kRotateLimitX);
 	worldTransform_.rotation_.y = max(worldTransform_.rotation_.y, -kRotateLimitY);
@@ -259,18 +254,20 @@ void Player::Rotate() {
 }
 
 /// <summary>
-/// UŒ‚
+/// æ”»æ’ƒ
 /// </summary>
 void Player::Attack(Model* model) {
 	bulletModel_ = model;
 	XINPUT_STATE joyState;
+
+	Vector3 TwoWay = {1, 0, 0};
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 
 		return;
 	}
 	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
-		//’e‚Ì‘¬“x
+		//å¼¾ã®é€Ÿåº¦
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = Affin::VecMat(velocity, worldTransform_.parent_->matWorld_);
@@ -285,24 +282,27 @@ void Player::Attack(Model* model) {
 		}
 		velocity *= kBulletSpeed;
 
-		//’e‚Ì¶¬‚µA‰Šú‰»
+		//å¼¾ã®ç”Ÿæˆã—ã€åˆæœŸåŒ–
 		Vector3 playerRot, playerPos;
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		// •½s
+		std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
+		// å¹³è¡Œ
 		playerPos = worldTransform_.parent_->translation_;
 		playerPos += worldTransform_.translation_;
-		// ‰ñ“]
+		// å›è»¢
 		playerRot = worldTransform_.parent_->rotation_;
 		playerRot += worldTransform_.rotation_;
-		newBullet->Initialize(bulletModel_, GetWorldPosition(), velocity);
+		newBullet->Initialize(bulletModel_, GetWorldPosition()+=TwoWay, velocity);
+		newBullet2->Initialize(bulletModel_, GetWorldPosition()-=TwoWay, velocity);
 
-		//’e‚Ì“o˜^‚·‚é
+		//å¼¾ã®ç™»éŒ²ã™ã‚‹
 		bullets_.push_back(std::move(newBullet));
+		bullets_.push_back(std::move(newBullet2));
 	}
 }
 
 /// <summary>
-/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 /// </summary>
 Vector3 Player::GetWorldPosition() {
 	//
@@ -316,7 +316,7 @@ Vector3 Player::GetWorldPosition() {
 }
 
 /// <summary>
-/// Õ“Ë‚ğŒŸ’m‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+/// è¡çªã‚’æ¤œçŸ¥ã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 /// </summary>
 void Player::OnCollision() {
 	hp -= 1;
@@ -324,26 +324,26 @@ void Player::OnCollision() {
 		isDead = true;
 	}
 }
-// point ‰ÁZ
+// point åŠ ç®—
 void Player::AddPoint() { point += 1; }
 
 /// <summary>
-/// UI•`‰æ
+/// UIæç”»
 /// </summary>
 void Player::DrawUI() { sprite2DReticle_->Draw(); }
 
 /// <summary>
-/// ©‹@‚Ìƒ[ƒ‹ƒhÀ•W‚©‚ç3DƒŒƒeƒBƒNƒ‹‚Ìƒ[ƒ‹ƒhÀ•W‚ğŒvZ
+/// è‡ªæ©Ÿã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‹ã‚‰3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—
 /// </summary>
 void Player::WorldReticle() {
-	//©‹@‚Ìƒ[ƒ‹ƒhÀ•W‚©‚ç3DƒŒƒeƒBƒNƒ‹‚Ìƒ[ƒ‹ƒhÀ•W‚ğŒvZ
-	//©‹@‚©‚ç3DƒŒƒeƒBƒNƒ‹‚Ö‚Ì‹——£
+	//è‡ªæ©Ÿã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‹ã‚‰3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’è¨ˆç®—
+	//è‡ªæ©Ÿã‹ã‚‰3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã¸ã®è·é›¢
 	const float kDistancePlayerTo3DReticle = 50.0f;
-	//©‹@‚©‚ç3DƒŒƒeƒBƒNƒ‹‚Ö‚ÌƒIƒtƒZƒbƒg(Z+Œü‚«)
+	//è‡ªæ©Ÿã‹ã‚‰3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã¸ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ(Z+å‘ã)
 	Vector3 offset = {0, 0, 1.0f};
-	//©‹@‚Ìƒ[ƒ‹ƒhs—ñ‚Ì‰ñ“]‚ğ”½‰f
+	//è‡ªæ©Ÿã®ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®å›è»¢ã‚’åæ˜ 
 	offset = Affin::VecMat(offset, worldTransform_.matWorld_);
-	//ƒxƒNƒgƒ‹‚Ì’·‚³‚ğ®‚¦‚é
+	//ãƒ™ã‚¯ãƒˆãƒ«ã®é•·ã•ã‚’æ•´ãˆã‚‹
 	float len = sqrt(offset.x * offset.x + offset.y * offset.y + offset.z * offset.z);
 	if (len != 0) {
 		offset /= len;
@@ -354,13 +354,13 @@ void Player::WorldReticle() {
 	worldTransform3DReticle_.TransferMatrix();
 }
 
-// 3DƒŒƒeƒBƒNƒ‹‚Ìƒ[ƒ‹ƒhÀ•W‚©‚ç2DƒŒƒeƒBƒNƒ‹‚ÌƒXƒNƒŠ[ƒ“À•W‚ğŒvZ
+// 3Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‹ã‚‰2Dãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã®ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’è¨ˆç®—
 void Player::Reticle(ViewProjection viewprojection) {
 	WorldReticle();
 
 	Vector3 positionReticle = Affin::GetWorldTrans(worldTransform3DReticle_.matWorld_);
 
-	//ƒrƒ…[ƒ|[ƒgs—ñ
+	//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¡Œåˆ—
 	Matrix4 matViewport = {
 	  640, 0, 0, 0, 
 	  0, -360, 0, 0,
@@ -368,54 +368,18 @@ void Player::Reticle(ViewProjection viewprojection) {
 	  640, 360, 0, 1,
 	};
 
-	//ƒrƒ…[ƒ|[ƒgs—ñ
+	//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¡Œåˆ—
 	Matrix4 matViewProjectionViewport;
 	matViewProjectionViewport = viewprojection.matView;
 	matViewProjectionViewport *= viewprojection.matProjection;
 	matViewProjectionViewport *= matViewport;
 
-	//ƒ[ƒ‹ƒh¨ƒXƒNƒŠ[ƒ“À•W•ÏŠ·(‚±‚±‚Å3D‚©‚ç2D‚É‚È‚é)
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰â†’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™å¤‰æ›(ã“ã“ã§3Dã‹ã‚‰2Dã«ãªã‚‹)
 	positionReticle = Affin::wDivision(positionReticle, matViewProjectionViewport);
 
-	//ƒXƒvƒ‰ƒCƒg‚ÌƒŒƒeƒBƒNƒ‹‚ÉÀ•Wİ’è
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã«åº§æ¨™è¨­å®š
 	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 
 	debugText_->SetPos(100, 100);
 	debugText_->Printf("X:%f,Y:%f", positionReticle.x, positionReticle.y);
-}
-
-int Player::OnFlag(int playerState, int buff) {
-	int result = 0b0000;
-	if (buff && playerState == buff) {
-		return playerState;
-	} else {
-		result += playerState | buff;
-	}
-
-	playerState = result;
-	return playerState;
-}
-
-int Player::OffFlag(int playerState, int buff) {
-	int result = 0b0000;
-	result = playerState & ~buff;
-
-	playerState = result;
-	return playerState;
-}
-
-int Player::CheckPlayerBuff(int playerState, int food) {
-	int result = 0b0000;
-	switch (food)
-	{
-	case 0:
-		result = OnFlag(playerState, attackBuff);
-		buffTimer = 900.0f;
-		break;
-	default:
-		break;
-	}
-
-	playerState = result;
-	return playerState;
 }

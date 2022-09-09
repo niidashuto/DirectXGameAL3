@@ -209,6 +209,8 @@
     <ClInclude Include="Object\Enemy.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>ヘッダー ファイル</Filter>
     <ClInclude Include="Object\Food.h">
       <Filter>ヘッダー ファイル\object</Filter>
     </ClInclude>
