@@ -253,6 +253,8 @@ void Player::Attack(Model* model) {
 	bulletModel_ = model;
 	XINPUT_STATE joyState;
 
+	Vector3 TwoWay = {1, 0, 0};
+
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 
 		return;
@@ -276,16 +278,19 @@ void Player::Attack(Model* model) {
 		//íeÇÃê∂ê¨ÇµÅAèâä˙âª
 		Vector3 playerRot, playerPos;
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+		std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
 		// ïΩçs
 		playerPos = worldTransform_.parent_->translation_;
 		playerPos += worldTransform_.translation_;
 		// âÒì]
 		playerRot = worldTransform_.parent_->rotation_;
 		playerRot += worldTransform_.rotation_;
-		newBullet->Initialize(bulletModel_, GetWorldPosition(), velocity);
+		newBullet->Initialize(bulletModel_, GetWorldPosition()+=TwoWay, velocity);
+		newBullet2->Initialize(bulletModel_, GetWorldPosition()-=TwoWay, velocity);
 
 		//íeÇÃìoò^Ç∑ÇÈ
 		bullets_.push_back(std::move(newBullet));
+		bullets_.push_back(std::move(newBullet2));
 	}
 }
 
