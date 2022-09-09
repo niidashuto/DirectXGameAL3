@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #pragma once
-class Item;
+class Player;
 
 enum FoodID {
 	curry,
@@ -45,7 +45,7 @@ private:
 	// デスフラグ
 	bool isDead_ = false;
 	int tribe_ = 0;
-	Item* item_ = nullptr;
+	Player* player_ = nullptr;
 
 public:
 	// 半径
@@ -58,6 +58,7 @@ public:
 	void SetTexture(int tribe);
 	void SetModel(int tribe);
 	void SetTribe(int T);
+	int GetTribe() { return tribe_; }
 
 public:
 	/// <summary>

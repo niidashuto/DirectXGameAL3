@@ -45,6 +45,7 @@ class Player {
 	int point = 0;
 	bool isDead = false;
 
+
   public:
 	float r = 1.0f;
 
@@ -130,4 +131,6 @@ class Player {
 	int GetPoint() { return point; }
 
 	bool IsDead() const { return isDead; }
+
+	void AddItem(int tribe);
 };
