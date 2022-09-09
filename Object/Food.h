@@ -2,27 +2,6 @@
 #include "WorldTransform.h"
 #pragma once
 
-enum FoodID {
-	curry,
-	yakiniku,
-	medamayaki,
-	nikujaga,
-	salada
-};
-
-enum materialID {
-	butaniku,
-	gyuuniku,
-	toriniku,
-	tamago,
-	retasu,
-	imo,
-	tomato,
-	ninnjinn,
-	tamanegi,
-	kome
-};
-
 /// <summary>
 /// 料理素材用クラス
 /// </summary>
@@ -40,7 +19,6 @@ private:
 
 	// デスフラグ
 	bool isDead_ = false;
-
 
 public:
 	// 半径

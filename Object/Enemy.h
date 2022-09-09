@@ -96,8 +96,6 @@ class Enemy {
 	/// </summary>
 	void Fire(Model* model);
 
-	
-
 	/// <summary>
 	/// 接近フェーズ初期化
 	/// </summary>
@@ -118,9 +116,9 @@ class Enemy {
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	void SetTribe(int W) { tribe = W; }
 
-	void SetModel();
 	// texture を設定
 	void SetTexture();
+	void SetModel();
 
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }

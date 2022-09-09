@@ -24,8 +24,6 @@ enum stage {
 	END
 };
 
-
-
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -72,8 +70,6 @@ class GameScene {
 	/// </summary>
 	void AddEnemyBullet(std::unique_ptr<EnemyBullet> enemyBullet);
 	void AddFood(std::unique_ptr<Food> food);
-
-	
 
 	/// <summary>
 	/// 敵発生データの読み込み
