@@ -201,6 +201,8 @@ void GameScene::Update() {
 			food->Update();
 		}
 
+		item_->Update();
+
 		//衝突判定
 		CheckAllCollisions();
 

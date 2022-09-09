@@ -23,6 +23,9 @@ void Food::Initialize(const Vector3& position, int tribe) {
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
 
+	worldTransform_.matWorld_ = Affin::matWorld(
+		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
+
 	worldTransform_.TransferMatrix();
 }
 
@@ -33,6 +36,7 @@ void Food::Update() {
 	// プレイヤーのZ座標に合わせ、加工させる
 	if (worldTransform_.translation_.y >= 35) {
 		worldTransform_.translation_.z = -40.0f;
+		worldTransform_.translation_.x = worldTransform_.translation_.x / 2;;
 		velocity_ = { 0.0f, -0.2f,0.0f };
 	}
 

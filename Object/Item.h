@@ -33,9 +33,7 @@ enum ItemID {
 struct ItemStrage {
 	bool item = false;
 	int tribe = 0;
-	ItemStrage* parent_ = nullptr;
 };
-
 
 class Item
 {
@@ -48,15 +46,13 @@ private:
 
 	//std::unique_ptr<Sprite> sprite2DItem;
 
-	int itemTime = 0;
+	int itemTime = 10;
 	bool stay;
 
-	//DebugText* debugText_ = nullptr;
-
-	
+	DebugText* debugText_ = nullptr;
 
 	int item = 0b0000000;
-	ItemStrage* strage[5];
+	ItemStrage strage[5];
 
 public:
 	void Initialize();
@@ -73,18 +69,4 @@ public:
 	int SALADA();
 	int SIOTOMATO();
 	int OMURAISU();
-
-
 };
-
-
-const int Tamago	= 0b1000000;
-const int Retasu	= 0b0100000;
-const int Imo		= 0b0010000;
-const int Tomato	= 0b0001000;
-const int Ninnjinn	= 0b0000100;
-const int Tamanegi	= 0b0000010;
-const int Kome		= 0b0000001;
-
-
-
