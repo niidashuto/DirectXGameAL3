@@ -3,30 +3,6 @@
 #pragma once
 class Player;
 
-enum FoodID {
-	curry,
-	yakiniku,
-	medamayaki,
-	nikujaga,
-	salada,
-	siotomato,
-	omuraisu,
-};
-
-enum materialID {
-	butaniku,
-	gyuuniku,
-	toriniku,
-	tamago,
-	retasu,
-	imo,
-	tomato,
-	ninnjinn,
-	tamanegi,
-	kome,
-	banana,
-};
-
 /// <summary>
 /// 料理素材用クラス
 /// </summary>

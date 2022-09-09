@@ -383,3 +383,40 @@ void Player::Reticle(ViewProjection viewprojection) {
 void Player::AddItem(int tribe) {
 	
 }
+
+int Player::OnFlag(int playerState, int buff) {
+	int result = 0b0000;
+	if (buff && playerState == buff) {
+		return playerState;
+	}
+	else {
+		result += playerState | buff;
+	}
+
+	playerState = result;
+	return playerState;
+}
+
+int Player::OffFlag(int playerState, int buff) {
+	int result = 0b0000;
+	result = playerState & ~buff;
+
+	playerState = result;
+	return playerState;
+}
+
+int Player::CheckPlayerBuff(int playerState, int food) {
+	int result = 0b0000;
+	switch (food)
+	{
+	case 0:
+		result = OnFlag(playerState, attackBuff);
+		buffTimer = 900.0f;
+		break;
+	default:
+		break;
+	}
+
+	playerState = result;
+	return playerState;
+}

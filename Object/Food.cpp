@@ -3,6 +3,7 @@
 #include <cassert>
 #include "Enemy.h"
 #include <random>
+#include "Item.h"
 
 #include "Player.h"
 
@@ -158,39 +159,39 @@ void Food::SetTribe(int tribe) {
 	switch (tribe) {
 
 	case Pig:
-		tribe_ = butaniku;
+		tribe_ = BUTANIKU;
 		break;
 	case Cow:
-		tribe_ = gyuuniku;
+		tribe_ = GYUNIKU;
 		break;
 	case Chicken:
 		/*if (posDist(engine) <= 15) {
 			tribe_ = toriniku;
 		}*/
 
-		tribe_ = tamago;
+		tribe_ = TAMAGO;
 
 		break;
 	case Lettuce:
-		tribe_ = retasu;
+		tribe_ = RETASU;
 		break;
 	case Potato:
-		tribe_ = imo;
+		tribe_ = IMO;
 		break;
 	case Tomato:
-		tribe_ = tomato;
+		tribe_ = TOMATO;
 		break;
 	case Carrot:
-		tribe_ = ninnjinn;
+		tribe_ = NINNJINN;
 		break;
 	case Onion:
-		tribe_ = tamanegi;
+		tribe_ = TAMANEGI;
 		break;
 	case Rice:
-		tribe_ = kome;
+		tribe_ = KOME;
 		break;
 	case Monkey:
-		tribe_ = banana;
+		tribe_ = BANANA;
 		break;
 	}
 }
