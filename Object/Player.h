@@ -45,6 +45,17 @@ class Player {
 	int point = 0;
 	bool isDead = false;
 
+	// プレイヤーのバフ状態
+	const int initState = 0b0000;
+
+	int playerState = 0b0000;
+	int attackBuff = 0b1000;
+	int speedBuff = 0b0100;
+	int twoWay = 0b0010;
+	int something = 0b0001;
+
+	float buffTimer = 0.0f;
+
 
   public:
 	float r = 1.0f;
@@ -133,4 +144,11 @@ class Player {
 	bool IsDead() const { return isDead; }
 
 	void AddItem(int tribe);
+
+	/// <summary>
+	/// 状態異常のフラグを立てる,下げる
+	/// </summary>
+	int CheckPlayerBuff(int playerState, int food);
+	int OnFlag(int playerState, int buff);
+	int OffFlag(int playerState, int buff);
 };
