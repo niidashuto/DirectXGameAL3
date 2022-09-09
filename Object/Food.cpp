@@ -1,66 +1,72 @@
 #include "Food.h"
 #include "Affin.h"
 #include <cassert>
+#include "Item.h"
+#include "Enemy.h"
+#include <random>
 
 /// <summary>
-/// ‰Šú‰»
+/// åˆæœŸåŒ–
 /// </summary>
 void Food::Initialize(const Vector3& position, int tribe) {
-	// ƒ‚ƒfƒ‹“Ç‚İ‚İ
+	// ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 	SetModel(tribe);
 
-	// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	SetTexture(tribe);
 
-	// ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
 	worldTransform_.Initialize();
-	// ˆø”‚Åó‚¯æ‚Á‚½‰ŠúÀ•W‚ğƒZƒbƒg
+	// å¼•æ•°ã§å—ã‘å–ã£ãŸåˆæœŸåº§æ¨™ã‚’ã‚»ãƒƒãƒˆ
 	worldTransform_.translation_ = position;
 
 	worldTransform_.TransferMatrix();
 }
 
 /// <summary>
-/// XV
+/// æ›´æ–°
 /// </summary>
 void Food::Update() {
-	// ƒvƒŒƒCƒ„[‚ÌZÀ•W‚É‡‚í‚¹A‰ÁH‚³‚¹‚é
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Zåº§æ¨™ã«åˆã‚ã›ã€åŠ å·¥ã•ã›ã‚‹
 	if (worldTransform_.translation_.y >= 35) {
 		worldTransform_.translation_.z = -40.0f;
 		velocity_ = { 0.0f, -0.2f,0.0f };
 	}
 
-	// À•W‚ğˆÚ“®‚³‚¹‚é (1ƒtƒŒ[ƒ€•ª‚ÌˆÚ“®—Ê‚ğ‘«‚µ‚±‚Ş)
+	// åº§æ¨™ã‚’ç§»å‹•ã•ã›ã‚‹ (1ãƒ•ãƒ¬ãƒ¼ãƒ åˆ†ã®ç§»å‹•é‡ã‚’è¶³ã—ã“ã‚€)
 	worldTransform_.translation_ += velocity_;
 
-	// s—ñ‚ÌXV
+	// è¡Œåˆ—ã®æ›´æ–°
 	worldTransform_.matWorld_ = Affin::matWorld(
 		worldTransform_.translation_, worldTransform_.rotation_, worldTransform_.scale_);
 	worldTransform_.TransferMatrix();
 
-	// ŠÔŒo‰ß‚ÅƒfƒX
+	// æ™‚é–“çµŒéã§ãƒ‡ã‚¹
 	if (worldTransform_.translation_.y <= -30.0f) {
 		isDead_ = true;
+	if (--dethTimer_ <= 0) {
+		//isDead_ = true;
 	}
 }
 
 /// <summary>
-/// •`‰æ
+/// æç”»
 /// </summary>
 void Food::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
 /// <summary>
-/// Õ“Ë‚ğŒŸ’m‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+/// è¡çªã‚’æ¤œçŸ¥ã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 /// </summary>
 void Food::OnCollision() {
-	// ƒfƒX
+	item_->AddItem(tribe_);
+	// ãƒ‡ã‚¹
 	isDead_ = true;
 }
 
 /// <summary>
-/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 /// </summary>
 Vector3 Food::GetWorldPosition() {
 	Vector3 worldPos;
@@ -145,6 +151,50 @@ void Food::SetModel(int tribe) {
 		break;
 	case 10:
 		model_ = Model::CreateFromOBJ("cube", true);
+//ä¹±æ•°ã‚·ãƒ¼ãƒ‰ç”Ÿæˆå™¨
+std::random_device seed_gem;
+//ãƒ¡ãƒ«ã‚»ãƒ³ãƒŒãƒ»ãƒ„ã‚¤ã‚¹ã‚¿ãƒ¼
+std::mt19937_64 engine(seed_gem());
+//ä¹±æ•°ç¯„å›²ï¼ˆåº§æ¨™ç”¨ï¼‰
+std::uniform_real_distribution<float> posDist(0.0f, 30.0f);
+
+void Food::SetTribe(int tribe) {
+	switch (tribe) {
+
+	case Pig:
+		tribe_ = butaniku;
+		break;
+	case Cow:
+		tribe_ = gyuuniku;
+		break;
+	case Chicken:
+		if (posDist(engine) <= 15) {
+			tribe_ = toriniku;
+		}
+		if (posDist(engine) > 15) {
+			tribe_ = tamago;
+		}
+		break;
+	case Lettuce:
+		tribe_ = retasu;
+		break;
+	case Potato:
+		tribe_ = imo;
+		break;
+	case Tomato:
+		tribe_ = tomato;
+		break;
+	case Carrot:
+		tribe_ = ninnjinn;
+		break;
+	case Onion:
+		tribe_ = tamanegi;
+		break;
+	case Rice:
+		tribe_ = kome;
+		break;
+	case Monkey:
+		tribe_ = banana;
 		break;
 	}
 }

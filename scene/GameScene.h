@@ -16,6 +16,7 @@
 #include "RailCamera.h"
 #include "Skydome.h"
 #include <sstream>
+#include "Item.h"
 
 enum stage {
 	TITLE,
@@ -122,6 +123,8 @@ class GameScene {
 
 	// キャラ
 	Player* player_ = nullptr;
+
+	Item* item_ = nullptr;
 
 	// 敵
 	std::list<std::unique_ptr<Enemy>> enemy_;
