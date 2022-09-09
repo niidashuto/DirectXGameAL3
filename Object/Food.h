@@ -58,7 +58,6 @@ public:
 	void SetTexture(int tribe);
 	void SetModel(int tribe);
 	void SetTribe(int T);
-	float r = 0.5;
 
 public:
 	/// <summary>

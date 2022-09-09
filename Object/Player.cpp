@@ -152,10 +152,6 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 	debugText_->SetPos(600, 550);
 	debugText_->Printf("   hp    : %d", hp);
 
-	if (buffTimer >= 0) {
-		buffTimer--;
-	}
-
 	debugText_->SetPos(100, 150);
 	debugText_->Printf("%d", worldTransform_.translation_.z);
 #pragma endregion

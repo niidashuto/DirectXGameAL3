@@ -47,7 +47,6 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelBullet_ = Model::CreateFromOBJ("bullet", true);
 	modelPlayer_ = Model::CreateFromOBJ("body", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
-	modelFood_ = Model::CreateFromOBJ("cube", true);
 	// 
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);

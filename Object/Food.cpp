@@ -44,7 +44,6 @@ void Food::Update() {
 	// 時間経過でデス
 	if (worldTransform_.translation_.y <= -30.0f) {
 		isDead_ = true;
-	if (--dethTimer_ <= 0) {
 		//isDead_ = true;
 	}
 }
@@ -151,12 +150,8 @@ void Food::SetModel(int tribe) {
 		break;
 	case 10:
 		model_ = Model::CreateFromOBJ("cube", true);
-//乱数シード生成器
-std::random_device seed_gem;
-//メルセンヌ・ツイスター
-std::mt19937_64 engine(seed_gem());
-//乱数範囲（座標用）
-std::uniform_real_distribution<float> posDist(0.0f, 30.0f);
+	}
+}
 
 void Food::SetTribe(int tribe) {
 	switch (tribe) {
@@ -168,12 +163,12 @@ void Food::SetTribe(int tribe) {
 		tribe_ = gyuuniku;
 		break;
 	case Chicken:
-		if (posDist(engine) <= 15) {
+		/*if (posDist(engine) <= 15) {
 			tribe_ = toriniku;
 		}
 		if (posDist(engine) > 15) {
 			tribe_ = tamago;
-		}
+		}*/
 		break;
 	case Lettuce:
 		tribe_ = retasu;

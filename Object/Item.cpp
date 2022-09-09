@@ -72,10 +72,6 @@ void Item::UpdateItemCommands(int num) {
 	// 1行分の文字列を入れる
 	std::string line;
 
-
-	// 1行分の文字列を入れる
-	std::string line;
-
 	//コマンド実行ループ
 	while (getline(itemCommands, line)) {
 		// 1行分の文字列をストリームに変換して解析しやすくする
