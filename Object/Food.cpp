@@ -1,6 +1,9 @@
 #include "Food.h"
 #include "Affin.h"
 #include <cassert>
+#include "Item.h"
+#include "Enemy.h"
+#include <random>
 
 /// <summary>
 /// 初期化
@@ -43,7 +46,7 @@ void Food::Update() {
 
 	// 時間経過でデス
 	if (--dethTimer_ <= 0) {
-		isDead_ = true;
+		//isDead_ = true;
 	}
 }
 
@@ -58,6 +61,7 @@ void Food::Draw(const ViewProjection& viewProjection) {
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
 void Food::OnCollision() {
+	item_->AddItem(tribe_);
 	// デス
 	isDead_ = true;
 }
@@ -74,4 +78,52 @@ Vector3 Food::GetWorldPosition() {
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
+}
+
+//乱数シード生成器
+std::random_device seed_gem;
+//メルセンヌ・ツイスター
+std::mt19937_64 engine(seed_gem());
+//乱数範囲（座標用）
+std::uniform_real_distribution<float> posDist(0.0f, 30.0f);
+
+void Food::SetTribe(int tribe) {
+	switch (tribe) {
+
+	case Pig:
+		tribe_ = butaniku;
+		break;
+	case Cow:
+		tribe_ = gyuuniku;
+		break;
+	case Chicken:
+		if (posDist(engine) <= 15) {
+			tribe_ = toriniku;
+		}
+		if (posDist(engine) > 15) {
+			tribe_ = tamago;
+		}
+		break;
+	case Lettuce:
+		tribe_ = retasu;
+		break;
+	case Potato:
+		tribe_ = imo;
+		break;
+	case Tomato:
+		tribe_ = tomato;
+		break;
+	case Carrot:
+		tribe_ = ninnjinn;
+		break;
+	case Onion:
+		tribe_ = tamanegi;
+		break;
+	case Rice:
+		tribe_ = kome;
+		break;
+	case Monkey:
+		tribe_ = banana;
+		break;
+	}
 }

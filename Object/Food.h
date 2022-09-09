@@ -1,13 +1,16 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #pragma once
+class Item;
 
 enum FoodID {
 	curry,
 	yakiniku,
 	medamayaki,
 	nikujaga,
-	salada
+	salada,
+	siotomato,
+	omuraisu,
 };
 
 enum materialID {
@@ -20,7 +23,8 @@ enum materialID {
 	tomato,
 	ninnjinn,
 	tamanegi,
-	kome
+	kome,
+	banana,
 };
 
 /// <summary>
@@ -45,10 +49,13 @@ private:
 	int32_t dethTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+	int tribe_ = 0;
+	Item* item_ = nullptr;
 
 public:
 	bool IsDead() const { return isDead_; }
 	void IsDeath() { isDead_ = true; }
+	void SetTribe(int T);
 	float r = 0.5;
 
 public:
