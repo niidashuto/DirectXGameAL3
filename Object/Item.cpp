@@ -2,14 +2,12 @@
 #include "TextureManager.h"
 
 
-
-
 void Item::Initialize() {
 
 	debugText_ = DebugText::GetInstance();
 
 	//worldTransform_.Initialize();
-	for (int i = 0; i < 5; i++) {
+	/*for (int i = 0; i < 5; i++) {
 		strage[i].item = false;
 		strage[i].tribe = 10;
 	}
@@ -27,6 +25,17 @@ void Item::Initialize() {
 	
 	
 	
+		strage[i].tribe = 0;
+	}*/
+	/*strage[0].item = true;
+	strage[1].item = true;
+	strage[2].item = true;
+	strage[3].item = true;
+	strage[0].tribe = TAMAGO;
+	strage[1].tribe = TAMAGO;
+	strage[2].tribe = BUTANIKU;
+	strage[3].tribe = BUTANIKU;*/
+
 
 }
 void Item::Update() {
@@ -76,10 +85,26 @@ void Item::AddItem(int tribe) {
 			strage[4].item = true;
 			strage[4].tribe = tribe;
 		}
+		else {
+			Replacement(tribe);
+		}
 
 		itemTime = 10;
 	}
 
+}
+
+void Item::Replacement(int tribe) {
+	strage[0].item = false;
+	strage[0].tribe = NONE;
+
+	for (int i = 0; i < 4; i++) {
+		strage[i].item = strage[i + 1].item;
+		strage[i].tribe = strage[i + 1].tribe;
+	}
+
+	strage[4].item = true;
+	strage[4].tribe = tribe;
 }
 
 int Item::CURRY() {
@@ -117,7 +142,7 @@ int Item::CURRY() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -153,7 +178,7 @@ int Item::YAKINIKU() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -187,7 +212,7 @@ int Item::MEDAMAYAKI() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -221,7 +246,7 @@ int Item::NIKUJAGA() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -255,7 +280,7 @@ int Item::SALADA() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -289,7 +314,7 @@ int Item::SIOTOMATO() {
 			strage[keepnum[i]].item = false;
 			strage[keepnum[i]].tribe = NONE;
 		}
-		return result;
+		return true;
 	}
 }
 
@@ -324,7 +349,7 @@ int Item::OMURAISU() {
 			strage[keepnum[i]].tribe = NONE;
 		}
 
-		return result;
+		return true;
 	}
 }
 void Item::loadSprite() {

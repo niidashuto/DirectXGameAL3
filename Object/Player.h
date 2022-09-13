@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "PlayerBullet.h"
+#include "Item.h"
 
 /// <summary>
 /// 自キャラ
@@ -47,15 +48,20 @@ class Player {
 
 	// プレイヤーのバフ状態
 	const int initState = 0b0000;
-
 	int playerState = 0b0000;
-	int attackBuff = 0b1000;
-	int speedBuff = 0b0100;
-	int twoWay = 0b0010;
-	int something = 0b0001;
 
-	float buffTimer = 0.0f;
+	enum Buff {
+		POWERBUFF = 1 << 0,
+		SPEEDBUFF = 1 << 1,
+		TWOWAY = 1 << 2,
+		THREEWAY = 1 << 3,
+		POWERDEBUFF = 1 << 4,
+		SPEEDDEBUFF = 1 << 5
+	};
 
+	int attackBuffTimer = 900;
+	int sppedBuffTimer = 900;
+	int powerBuffTimer = 900;
 
   public:
 	float r = 1.0f;
@@ -69,7 +75,7 @@ class Player {
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(ViewProjection viewprojection, Model* model);
+	void Update(ViewProjection viewprojection, Model* model, Item* item);
 
 	/// <summary>
 	/// 描画
@@ -148,7 +154,8 @@ class Player {
 	/// <summary>
 	/// 状態異常のフラグを立てる,下げる
 	/// </summary>
-	int CheckPlayerBuff(int playerState, int food);
+	int CheckPlayerFlag(int playerState, Item* item);
+	bool CheckPlayerBuff(int playerState, int buff);
 	int OnFlag(int playerState, int buff);
 	int OffFlag(int playerState, int buff);
 };

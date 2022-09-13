@@ -16,7 +16,6 @@
 #include "RailCamera.h"
 #include "Skydome.h"
 #include <sstream>
-#include "Item.h"
 
 enum stage {
 	TITLE,
