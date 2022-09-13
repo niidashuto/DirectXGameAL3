@@ -389,7 +389,7 @@ void Player::WorldReticle() {
 	//自機から3Dレティクルへの距離
 	const float kDistancePlayerTo3DReticle = 50.0f;
 	//自機から3Dレティクルへのオフセット(Z+向き)
-	Vector3 offset = {0, 0, 1.0f};
+	Vector3 offset = {0, -5, 1.0f};
 	//自機のワールド行列の回転を反映
 	offset = Affin::VecMat(offset, worldTransform_.matWorld_);
 	//ベクトルの長さを整える
