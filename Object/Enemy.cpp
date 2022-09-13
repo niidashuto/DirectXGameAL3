@@ -276,25 +276,25 @@ void Enemy::SetTexture() {
 void Enemy::SetModel() {
 	switch (tribe){
 	case 0:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("buta", true);
 		break;
 	case 1:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("usi", true);
 		break;
 	case 2:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("tori", true);
 		break;
 	case 3:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("tori", true);
 		break;
 	case 4:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("tori", true);
 		break;
 	case 5:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("tori", true);
 		break;
 	case 6:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 7:
 		model_ = Model::CreateFromOBJ("cube", true);
