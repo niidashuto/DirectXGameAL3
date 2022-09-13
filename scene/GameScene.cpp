@@ -162,7 +162,7 @@ void GameScene::Update() {
 			stage = GAME;
 		}
 		//自キャラの更新
-		player_->Update(viewProjection_, modelBullet_);
+		player_->Update(viewProjection_, modelBullet_, item_);
 		railCamera_->Update(player_);
 
 		break;
@@ -180,7 +180,7 @@ void GameScene::Update() {
 		foods_.remove_if([](std::unique_ptr<Food>& food) { return food->IsDead(); });
 
 		//自キャラの更新
-		player_->Update(viewProjection_, modelBullet_);
+		player_->Update(viewProjection_, modelBullet_, item_);
 
 
 		eneRand = numDist(engine);
@@ -698,8 +698,6 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 			else {
 				break;
 			}
-
-
 
 		case Onion:
 			if (word.find("ONION") == 0) {

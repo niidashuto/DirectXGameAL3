@@ -34,10 +34,14 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update(ViewProjection viewProjection, Model* model) {
+void Player::Update(ViewProjection viewProjection, Model* model, Item* item) {
 	assert(model);
 	// デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
+
+	// バフ、デバフ確認
+	playerState = CheckPlayerFlag(playerState, item);
+
 
 #pragma region キャラクター移動処理
 
@@ -138,6 +142,23 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 	*/
 	}
 
+	if (attackBuffTimer <= 0) {
+		playerState = OffFlag(playerState, TWOWAY);
+		playerState = OffFlag(playerState, THREEWAY);
+
+		attackBuffTimer = 900;
+	}
+	if (powerBuffTimer <= 0) {
+		playerState = OffFlag(playerState, POWERBUFF);
+
+		powerBuffTimer = 900;
+	}
+	if (sppedBuffTimer <= 0) {
+		playerState = OffFlag(playerState, SPEEDBUFF);
+
+		sppedBuffTimer = 900;
+	}
+
 	/*debugText_->SetPos(10, 10);
 	debugText_->Printf(
 	  "player : x,%f  y,%f z,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
@@ -154,6 +175,9 @@ void Player::Update(ViewProjection viewProjection, Model* model) {
 
 	debugText_->SetPos(100, 150);
 	debugText_->Printf("%d", worldTransform_.translation_.z);
+
+	debugText_->SetPos(600, 150);
+	debugText_->Printf("%d %d", playerState, sppedBuffTimer);
 #pragma endregion
 }
 
@@ -200,6 +224,12 @@ void Player::Move() {
 	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 0.1;
 		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 0.1;
+		if (CheckPlayerBuff(playerState, SPEEDBUFF)) {
+			move.x *= 2.0f;
+			move.y *= 2.0f;
+
+			sppedBuffTimer--;
+		}
 	}
 
 	//移動限界座標
@@ -256,7 +286,8 @@ void Player::Attack(Model* model) {
 	bulletModel_ = model;
 	XINPUT_STATE joyState;
 
-	Vector3 TwoWay = {1, 0, 0};
+	Vector3 twoWay = {1, 0, 0};
+	Vector3 threeWay = {0, 1, 0};
 
 	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
 
@@ -281,19 +312,40 @@ void Player::Attack(Model* model) {
 		//弾の生成し、初期化
 		Vector3 playerRot, playerPos;
 		std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
-		std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
 		// 平行
 		playerPos = worldTransform_.parent_->translation_;
 		playerPos += worldTransform_.translation_;
 		// 回転
 		playerRot = worldTransform_.parent_->rotation_;
 		playerRot += worldTransform_.rotation_;
-		newBullet->Initialize(bulletModel_, GetWorldPosition()+=TwoWay, velocity);
-		newBullet2->Initialize(bulletModel_, GetWorldPosition()-=TwoWay, velocity);
 
-		//弾の登録する
-		bullets_.push_back(std::move(newBullet));
-		bullets_.push_back(std::move(newBullet2));
+		if (CheckPlayerBuff(playerState, THREEWAY)) {
+			std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
+			std::unique_ptr<PlayerBullet> newBullet3 = std::make_unique<PlayerBullet>();
+			newBullet->Initialize(bulletModel_, GetWorldPosition() += twoWay, velocity);
+			newBullet2->Initialize(bulletModel_, GetWorldPosition() -= twoWay, velocity);
+			newBullet3->Initialize(bulletModel_, GetWorldPosition() += threeWay, velocity);
+			bullets_.push_back(std::move(newBullet));
+			bullets_.push_back(std::move(newBullet2));
+			bullets_.push_back(std::move(newBullet3));
+
+			attackBuffTimer--;
+		}
+		else if (CheckPlayerBuff(playerState, TWOWAY)) {
+			std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
+			newBullet->Initialize(bulletModel_, GetWorldPosition() += twoWay, velocity);
+			newBullet2->Initialize(bulletModel_, GetWorldPosition() -= twoWay, velocity);
+			bullets_.push_back(std::move(newBullet2));
+
+			attackBuffTimer--;
+		}
+		else {
+			// 弾初期化
+			newBullet->Initialize(bulletModel_, GetWorldPosition(), velocity);
+			//弾の登録する
+			bullets_.push_back(std::move(newBullet));
+		}
+		
 	}
 }
 
@@ -385,38 +437,54 @@ void Player::AddItem(int tribe) {
 }
 
 int Player::OnFlag(int playerState, int buff) {
-	int result = 0b0000;
-	if (buff && playerState == buff) {
+	if (buff == (playerState & buff)) {
 		return playerState;
 	}
 	else {
-		result += playerState | buff;
+		playerState += playerState | buff;
 	}
 
-	playerState = result;
 	return playerState;
 }
 
 int Player::OffFlag(int playerState, int buff) {
-	int result = 0b0000;
-	result = playerState & ~buff;
+	playerState = playerState & ~buff;
 
-	playerState = result;
 	return playerState;
 }
 
-int Player::CheckPlayerBuff(int playerState, int food) {
-	int result = 0b0000;
-	switch (food)
-	{
-	case 0:
-		result = OnFlag(playerState, attackBuff);
-		buffTimer = 900.0f;
-		break;
-	default:
-		break;
+int Player::CheckPlayerFlag(int playerState, Item* item) {
+	if (item->CURRY()) {
+		playerState = OnFlag(playerState, TWOWAY);
+	}
+	else if (item->YAKINIKU()) {
+		playerState = OnFlag(playerState, THREEWAY);
+	}
+	else if (item->MEDAMAYAKI()) {
+		playerState = OnFlag(playerState, SPEEDBUFF);
+	}
+	else if (item->NIKUJAGA()) {
+		playerState = OnFlag(playerState, POWERBUFF);
+	}
+	else if (item->SALADA()) {
+		hp++;
+	}
+	else if (item->SIOTOMATO()) {
+		playerState = OnFlag(playerState, POWERDEBUFF);
+		playerState = OnFlag(playerState, SPEEDDEBUFF);
+	}
+	else if (item->OMURAISU()) {
+		playerState = OnFlag(playerState, POWERBUFF);
+		playerState = OnFlag(playerState, SPEEDBUFF);
+		hp++;
 	}
 
-	playerState = result;
 	return playerState;
+}
+
+bool Player::CheckPlayerBuff(int playerState, int buff) {
+	if (buff == (playerState & buff)) {
+		return true;
+	}
+	return false;
 }
