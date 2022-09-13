@@ -1,5 +1,5 @@
 #include "Item.h"
-
+#include "TextureManager.h"
 
 
 
@@ -11,21 +11,45 @@ void Item::Initialize() {
 	//worldTransform_.Initialize();
 	for (int i = 0; i < 5; i++) {
 		strage[i].item = false;
-		strage[i].tribe = 0;
+		strage[i].tribe = 10;
 	}
+	loadSprite();
+
+	//spriteItem1[0] = Sprite::Create(itemTextureHandle1_[0], { 100,100 });
+
+	for (int i = 0; i < 5; i++)
+	{
+		spriteItem1[i] = choiceSpriteItem(strage[i].tribe);
+	}
+
+	scale = spriteItem1[0]->GetSize();
+	pos = spriteItem1[0]->GetPosition();
+	
+	
+	
 
 }
 void Item::Update() {
 	itemTime--;
 
+	for (int i = 0; i < 5; i++)
+	{
+		spriteItem1[i] = choiceSpriteItem(strage[i].tribe);
+	}
+	setSizePosAllItem(size);
 	debugText_->SetPos(600, 300);
-	debugText_->Printf("%d		%d	%d	%d	%d", strage[0].tribe, strage[1].tribe, strage[2].tribe, strage[3].tribe, strage[4].tribe);
+	debugText_->Printf("%d	%d	%d	%d	%d", strage[0].tribe, strage[1].tribe, strage[2].tribe, strage[3].tribe, strage[4].tribe);
 }
 void Item::Draw() {
 
 }
 void Item::SpriteDraw() {
 
+	for (int i = 0; i < 5; i++)
+	{
+		spriteItem1[i]->Draw();
+	}
+	
 }
 
 
@@ -302,4 +326,76 @@ int Item::OMURAISU() {
 
 		return result;
 	}
+}
+void Item::loadSprite() {
+
+	itemTextureHandle1_[0] = TextureManager::Load("item/1butaniku.png");
+	itemTextureHandle1_[1] = TextureManager::Load("item/2gyuniku.png");
+	itemTextureHandle1_[2] = TextureManager::Load("item/3toriniku.png");
+	itemTextureHandle1_[3] = TextureManager::Load("item/4tamago.png");
+	itemTextureHandle1_[4] = TextureManager::Load("item/5retasu.png");
+	itemTextureHandle1_[5] = TextureManager::Load("item/6imo.png");
+	itemTextureHandle1_[6] = TextureManager::Load("item/7tomato.png");
+	itemTextureHandle1_[7] = TextureManager::Load("item/8ninjin.png");
+	itemTextureHandle1_[8] = TextureManager::Load("item/9tamanegi.png");
+	itemTextureHandle1_[9] = TextureManager::Load("item/10kome.png");
+	itemTextureHandle1_[10] = TextureManager::Load("item/11banana.png");
+	itemTextureHandle1_[11] = TextureManager::Load("none.png");
+
+	ryouriTextureHandle1_[0] = TextureManager::Load("ryouri/1carry.png");
+	ryouriTextureHandle1_[1] = TextureManager::Load("ryouri/2yakiniku.png");
+	ryouriTextureHandle1_[2] = TextureManager::Load("ryouri/3medamayaki.png");
+	ryouriTextureHandle1_[3] = TextureManager::Load("ryouri/4nikujaga.png");
+	ryouriTextureHandle1_[4] = TextureManager::Load("ryouri/5sarada.png");
+	ryouriTextureHandle1_[5] = TextureManager::Load("ryouri/6siotomato.png");
+	ryouriTextureHandle1_[6] = TextureManager::Load("ryouri/7omuraisu.png");
+	ryouriTextureHandle1_[7] = TextureManager::Load("none.png");
+
+}
+
+void Item::setSizePosAllItem(Vector2 size) {
+	Vector2 size_;
+	size_ = scale;
+	move= pos;	
+	size_.x *= size.x;
+	size_.y *= size.y;
+	for (int i = 0; i < 5; i++) {
+		spriteItem1[i]->SetSize(size_);
+		spriteItem1[i]->SetPosition(move);
+		move.x += 100;
+	}
+}
+
+
+Sprite* Item::choiceSpriteItem(int tribe) {
+
+	switch (tribe)
+	{
+	case 0:
+		return Sprite::Create(itemTextureHandle1_[0], { 100,100 });
+	case 1:
+		return Sprite::Create(itemTextureHandle1_[1], { 100,100 });
+	case 2:
+		return Sprite::Create(itemTextureHandle1_[2], { 100,100 });
+	case 3:
+		return Sprite::Create(itemTextureHandle1_[3], { 100,100 });
+	case 4:
+		return Sprite::Create(itemTextureHandle1_[4], { 100,100 });
+	case 5:
+		return Sprite::Create(itemTextureHandle1_[5], { 100,100 });
+	case 6:
+		return Sprite::Create(itemTextureHandle1_[6], { 100,100 });
+	case 7:
+		return Sprite::Create(itemTextureHandle1_[7], { 100,100 });
+	case 8:
+		return Sprite::Create(itemTextureHandle1_[8], { 100,100 });
+	case 9:
+		return Sprite::Create(itemTextureHandle1_[9], { 100,100 });
+	case 10:
+		return Sprite::Create(itemTextureHandle1_[10], { 100,100 });
+	case 11:
+		return Sprite::Create(itemTextureHandle1_[11], { 100,100 });
+		
+	}
+
 }

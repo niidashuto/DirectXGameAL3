@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include <cassert>
 #include <sstream>
+#include "Sprite.h"
 
 enum FoodID {
 	curry,
@@ -38,13 +39,16 @@ struct ItemStrage {
 class Item
 {
 private:
-	//	ワールド変換データ
-	//WorldTransform worldTransform_;
-
 	//テクスチャハンドル
-	//uint32_t textureHandle_ = 0u;
+	uint32_t itemTextureHandle1_[12];
+	uint32_t ryouriTextureHandle1_[8];
 
-	//std::unique_ptr<Sprite> sprite2DItem;
+	Sprite* spriteItem1[5];
+	Sprite* spriteRyouri[5];
+	Vector2 size = { 1.0f,1.0f };
+	Vector2 pos = { 0.0f,0.0f };
+	Vector2 move;
+	Vector2 scale;
 
 	int itemTime = 10;
 	bool stay;
@@ -53,6 +57,12 @@ private:
 
 	int item = 0b0000000;
 	ItemStrage strage[5];
+
+private:
+
+	void loadSprite();
+	void setSizePosAllItem(Vector2 size);
+	Sprite* choiceSpriteItem(int tribe);
 
 public:
 	void Initialize();
