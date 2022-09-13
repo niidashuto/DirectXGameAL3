@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("LE2B_21_フジタケンタロウ_OBJECTSHOOTER");
+	win->CreateGameWindow("No.2028");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
