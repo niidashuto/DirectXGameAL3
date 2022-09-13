@@ -148,6 +148,7 @@ void Player::Update(ViewProjection viewProjection, Model* model, Item* item) {
 
 		attackBuffTimer = 900;
 	}
+
 	if (powerBuffTimer <= 0) {
 		playerState = OffFlag(playerState, POWERBUFF);
 
@@ -456,27 +457,34 @@ int Player::OffFlag(int playerState, int buff) {
 int Player::CheckPlayerFlag(int playerState, Item* item) {
 	if (item->CURRY()) {
 		playerState = OnFlag(playerState, TWOWAY);
+		item->DrawFlag(0);
 	}
 	else if (item->YAKINIKU()) {
 		playerState = OnFlag(playerState, THREEWAY);
+		item->DrawFlag(1);
 	}
 	else if (item->MEDAMAYAKI()) {
 		playerState = OnFlag(playerState, SPEEDBUFF);
+		item->DrawFlag(2);
 	}
 	else if (item->NIKUJAGA()) {
 		playerState = OnFlag(playerState, POWERBUFF);
+		item->DrawFlag(3);
 	}
 	else if (item->SALADA()) {
+		item->DrawFlag(4);
 		hp++;
 	}
 	else if (item->SIOTOMATO()) {
 		playerState = OnFlag(playerState, POWERDEBUFF);
 		playerState = OnFlag(playerState, SPEEDDEBUFF);
+		item->DrawFlag(5);
 	}
 	else if (item->OMURAISU()) {
 		playerState = OnFlag(playerState, POWERBUFF);
 		playerState = OnFlag(playerState, SPEEDBUFF);
 		hp++;
+		item->DrawFlag(6);
 	}
 
 	return playerState;
