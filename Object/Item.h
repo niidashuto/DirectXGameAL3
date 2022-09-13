@@ -12,7 +12,7 @@ enum FoodID {
 	nikujaga,
 	salada,
 	siotomato,
-	omuraisu,
+	omuraisu
 };
 
 enum ItemID {
@@ -61,6 +61,7 @@ public:
 	void SpriteDraw();
 
 	void AddItem(int tribe);
+	void Replacement(int tribe);
 
 	int CURRY();
 	int YAKINIKU();
