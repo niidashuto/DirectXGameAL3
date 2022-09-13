@@ -46,7 +46,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 	player_ = new Player();
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-	modelBullet_ = Model::CreateFromOBJ("bullet", true);
+	modelBullet_ = Model::CreateFromOBJ("bulletKnife", true);
 	modelPlayer_ = Model::CreateFromOBJ("knife", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
 	item_ = new Item();
@@ -73,7 +73,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	//voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
-
+	
 }
 
 //乱数シード生成器
@@ -110,7 +110,6 @@ void GameScene::Update() {
 		viewProjection_.UpdateMatrix();
 		viewProjection_.TransferMatrix();
 	}
-
 
 
 	switch (stage) {
@@ -221,6 +220,33 @@ void GameScene::Update() {
 			stage = END;
 		}
 
+		if (waitTimer <= 0) {
+			if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+				return;
+			}
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_START)
+			{
+				stage = PAUSE;
+				waitTimer = 10;
+			}
+		}
+		waitTimer--;
+
+		break;
+	case PAUSE:
+		if (waitTimer <= 0) {
+			if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+				return;
+			}
+			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_START)
+			{
+				stage = GAME;
+				waitTimer = 10;
+			}
+		}
+		waitTimer--;
 
 		break;
 	}

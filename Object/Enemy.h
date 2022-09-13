@@ -74,6 +74,8 @@ class Enemy {
 
 	int tribe = 0;
 
+	int hp;
+
 	int damage = 1;
 
 	int damageUp = 5;
