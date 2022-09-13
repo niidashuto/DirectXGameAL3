@@ -6,8 +6,7 @@ void Item::Initialize() {
 
 	debugText_ = DebugText::GetInstance();
 
-	//worldTransform_.Initialize();
-	/*for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) {
 		strage[i].item = false;
 		strage[i].tribe = 10;
 	}
@@ -22,11 +21,7 @@ void Item::Initialize() {
 
 	scale = spriteItem1[0]->GetSize();
 	pos = spriteItem1[0]->GetPosition();
-	
-	
-	
-		strage[i].tribe = 0;
-	}*/
+
 	/*strage[0].item = true;
 	strage[1].item = true;
 	strage[2].item = true;
