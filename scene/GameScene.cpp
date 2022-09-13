@@ -19,6 +19,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete modelSkydome_;
 	delete item_;
+	delete title_;
 }
 
 
@@ -31,7 +32,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
-	soundDataHandle_ = audio_->LoadWave("sound/Irregular.wav");
+	//soundDataHandle_ = audio_->LoadWave("sound/Irregular.wav");
 
 	// 軸方向表示の表示を有効にする
 	//AxisIndicator::GetInstance()->SetVisible(true);
@@ -49,6 +50,10 @@ void GameScene::Initialize(GameScene* gameScene) {
 	modelPlayer_ = Model::CreateFromOBJ("knife", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
 	item_ = new Item();
+
+	titleTextureHandle_ = TextureManager::Load("title.png");
+	title_ = Sprite::Create(titleTextureHandle_, { 1,1 });
+
 	// 
 	//自キャラの初期化
 	player_->Initialize(modelPlayer_, textureHandle_);
@@ -251,18 +256,16 @@ void GameScene::Draw() {
 	/// 
 	switch (stage) {
 	case TITLE:
-		debugText_->SetPos(1280 / 2, 300);
-		debugText_->Printf(" OBJECTSHOOTER ");
 
-		debugText_->SetPos(1280 / 2, 720 / 2);
-		debugText_->Printf(" PRESS LB BUTTON ");
+		/*debugText_->SetPos(1280 / 2, 720 / 2);
+		debugText_->Printf(" PRESS LB BUTTON ");*/
 
 		break;
 
 	case INFO:
 
-		debugText_->SetPos(1280 / 2, 500);
-		debugText_->Printf(" SHOT RB  ");
+		/*debugText_->SetPos(1280 / 2, 500);
+		debugText_->Printf(" SHOT RB  ");*/
 
 		//自キャラの描画
 		player_->Draw(railCamera_->GetViewProjection());
@@ -315,15 +318,16 @@ void GameScene::Draw() {
 	switch (stage) {
 	case TITLE:
 
-		break;
+		title_->Draw();
 
+		break;
 	case END:
 
 		break;
 	case INFO:
 	case GAME:
 		player_->DrawUI();
-		item_->SpriteDraw();		
+		item_->SpriteDraw();
 		break;
 	}
 
