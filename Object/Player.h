@@ -158,4 +158,5 @@ class Player {
 	bool CheckPlayerBuff(int playerState, int buff);
 	int OnFlag(int playerState, int buff);
 	int OffFlag(int playerState, int buff);
+	int GetPlayerState() { return playerState; }
 };

@@ -1,41 +1,44 @@
 #include "Item.h"
 #include "TextureManager.h"
-
+#include "Player.h"
 
 void Item::Initialize() {
 
 	debugText_ = DebugText::GetInstance();
 
+	anchor = { 500,600 };
+	anchorRyo = { 430,500 };
+
 	//worldTransform_.Initialize();
-	/*for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++) {
 		strage[i].item = false;
-		strage[i].tribe = 10;
+		strage[i].tribe = 11;
 	}
+
 	loadSprite();
 
-	//spriteItem1[0] = Sprite::Create(itemTextureHandle1_[0], { 100,100 });
-
+	//
+	for (int i = 0; i < 5; i++)
+	{
+		spriteItem1[i] = Sprite::Create(itemTextureHandle1_[11], anchor);
+	}
 	for (int i = 0; i < 5; i++)
 	{
 		spriteItem1[i] = choiceSpriteItem(strage[i].tribe);
 	}
+	for (int i = 0; i < 7; i++)
+	{
+		spriteRyouri1[i] = Sprite::Create(ryouriTextureHandle1_[i], anchorRyo);
+	}
 
 	scale = spriteItem1[0]->GetSize();
-	pos = spriteItem1[0]->GetPosition();
-	
-	
-	
-		strage[i].tribe = 0;
-	}*/
-	/*strage[0].item = true;
-	strage[1].item = true;
-	strage[2].item = true;
-	strage[3].item = true;
-	strage[0].tribe = TAMAGO;
-	strage[1].tribe = TAMAGO;
-	strage[2].tribe = BUTANIKU;
-	strage[3].tribe = BUTANIKU;*/
+	posItem = spriteItem1[0]->GetPosition();
+	scaleRyo = spriteRyouri1[0]->GetSize();
+	posRyo = spriteRyouri1[0]->GetPosition();
 
+	/*for (int i = 0; i < 7; i++) {
+			ryouri[i] = false;
+		}*/
 
 }
 void Item::Update() {
@@ -45,9 +48,16 @@ void Item::Update() {
 	{
 		spriteItem1[i] = choiceSpriteItem(strage[i].tribe);
 	}
+	for (int i = 0; i < 7; i++)
+	{
+		buffDrawTime[i] -= 1;
+	}
 	setSizePosAllItem(size);
+	setSizePosRyouri(sizeRyo);
+
 	debugText_->SetPos(600, 300);
 	debugText_->Printf("%d	%d	%d	%d	%d", strage[0].tribe, strage[1].tribe, strage[2].tribe, strage[3].tribe, strage[4].tribe);
+
 }
 void Item::Draw() {
 
@@ -58,7 +68,8 @@ void Item::SpriteDraw() {
 	{
 		spriteItem1[i]->Draw();
 	}
-	
+	spriteRyouri();
+
 }
 
 
@@ -381,15 +392,29 @@ void Item::loadSprite() {
 void Item::setSizePosAllItem(Vector2 size) {
 	Vector2 size_;
 	size_ = scale;
-	move= pos;	
+	move = posItem;
 	size_.x *= size.x;
 	size_.y *= size.y;
 	for (int i = 0; i < 5; i++) {
 		spriteItem1[i]->SetSize(size_);
 		spriteItem1[i]->SetPosition(move);
-		move.x += 100;
+		move.x += 64;
 	}
 }
+void Item::setSizePosRyouri(Vector2 size) {
+	Vector2 size_;
+
+	size_ = scaleRyo;
+	moveRyo = posRyo;
+	size_.x *= size.x;
+	size_.y *= size.y;
+	for (int i = 0; i < 7; i++) {
+		spriteRyouri1[i]->SetSize(size_);
+		spriteRyouri1[i]->SetPosition(moveRyo);
+		moveRyo.x += 64;
+	}
+}
+
 
 
 Sprite* Item::choiceSpriteItem(int tribe) {
@@ -397,30 +422,39 @@ Sprite* Item::choiceSpriteItem(int tribe) {
 	switch (tribe)
 	{
 	case 0:
-		return Sprite::Create(itemTextureHandle1_[0], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[0], anchor);
 	case 1:
-		return Sprite::Create(itemTextureHandle1_[1], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[1], anchor);
 	case 2:
-		return Sprite::Create(itemTextureHandle1_[2], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[2], anchor);
 	case 3:
-		return Sprite::Create(itemTextureHandle1_[3], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[3], anchor);
 	case 4:
-		return Sprite::Create(itemTextureHandle1_[4], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[4], anchor);
 	case 5:
-		return Sprite::Create(itemTextureHandle1_[5], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[5], anchor);
 	case 6:
-		return Sprite::Create(itemTextureHandle1_[6], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[6], anchor);
 	case 7:
-		return Sprite::Create(itemTextureHandle1_[7], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[7], anchor);
 	case 8:
-		return Sprite::Create(itemTextureHandle1_[8], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[8], anchor);
 	case 9:
-		return Sprite::Create(itemTextureHandle1_[9], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[9], anchor);
 	case 10:
-		return Sprite::Create(itemTextureHandle1_[10], { 100,100 });
+		return Sprite::Create(itemTextureHandle1_[10], anchor);
 	case 11:
-		return Sprite::Create(itemTextureHandle1_[11], { 100,100 });
-		
+		return Sprite::Create(itemTextureHandle1_[11], anchor);
+
 	}
 
+}
+
+void Item::spriteRyouri() {
+	for (int i = 0; i < 7; i++)
+	{
+		if (ryouri[i] == true&& 0<=buffDrawTime[i]) {
+			spriteRyouri1[i]->Draw();
+		}
+	}
 }
