@@ -11,6 +11,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	assert(model);
 
 	model_ = model;
+
 	// テクスチャ読み込み
 	textureHandle_ = TextureManager::Load("jiki2.png");
 

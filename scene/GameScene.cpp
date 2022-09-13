@@ -45,7 +45,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 	player_ = new Player();
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-	modelBullet_ = Model::CreateFromOBJ("bullet", true);
+	modelBullet_ = Model::CreateFromOBJ("bulletKnife", true);
 	modelPlayer_ = Model::CreateFromOBJ("knife", true);
 	modelEnemy_ = Model::CreateFromOBJ("cube", true);
 	item_ = new Item();
