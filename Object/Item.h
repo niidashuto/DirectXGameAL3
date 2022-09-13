@@ -30,6 +30,7 @@ enum ItemID {
 	BANANA,
 	NONE
 };
+class Player;
 
 struct ItemStrage {
 	bool item = false;
@@ -44,25 +45,37 @@ private:
 	uint32_t ryouriTextureHandle1_[8];
 
 	Sprite* spriteItem1[5];
-	Sprite* spriteRyouri[5];
-	Vector2 size = { 1.0f,1.0f };
-	Vector2 pos = { 0.0f,0.0f };
+	Sprite* spriteRyouri1[7];
+	Vector2 size = { 0.5f,0.5f };
+	Vector2 posItem = { 0.0f,0.0f };
 	Vector2 move;
 	Vector2 scale;
+	Vector2 anchor;
+
+	Vector2 moveRyo;
+	Vector2 sizeRyo = { 1.0f,1.0f };
+	Vector2 posRyo;
+	Vector2 scaleRyo;
+	Vector2 anchorRyo;
 
 	int itemTime = 10;
 	bool stay;
+	bool ryouri[7];
 
 	DebugText* debugText_ = nullptr;
 
 	int item = 0b0000000;
 	ItemStrage strage[5];
+	Player* player_;
+
+	int buffDrawTime[7];
 
 private:
-
 	void loadSprite();
 	void setSizePosAllItem(Vector2 size);
+	void setSizePosRyouri(Vector2 size);
 	Sprite* choiceSpriteItem(int tribe);
+	void spriteRyouri();
 
 public:
 	void Initialize();
@@ -72,6 +85,11 @@ public:
 
 	void AddItem(int tribe);
 	void Replacement(int tribe);
+	void DrawFlag(int num){ 
+		ryouri[num] = true;
+		buffDrawTime[num] = 900;
+	}
+	void DrawDEFlag(int num){ ryouri[num] = false; }
 
 	int CURRY();
 	int YAKINIKU();
@@ -80,4 +98,13 @@ public:
 	int SALADA();
 	int SIOTOMATO();
 	int OMURAISU();
+};
+
+enum Buff {
+	POWERBUFF = 1 << 0,
+	SPEEDBUFF = 1 << 1,
+	TWOWAY = 1 << 2,
+	THREEWAY = 1 << 3,
+	POWERDEBUFF = 1 << 4,
+	SPEEDDEBUFF = 1 << 5
 };

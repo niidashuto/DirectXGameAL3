@@ -322,8 +322,8 @@ void GameScene::Draw() {
 		break;
 	case INFO:
 	case GAME:
-		item_->SpriteDraw();
 		player_->DrawUI();
+		item_->SpriteDraw();		
 		break;
 	}
 
