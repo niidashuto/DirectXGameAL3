@@ -42,7 +42,6 @@ void Item::Initialize() {
 	/*for (int i = 0; i < 7; i++) {
 			ryouri[i] = false;
 		}*/
-
 }
 void Item::Update() {
 	itemTime--;

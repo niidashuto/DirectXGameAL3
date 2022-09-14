@@ -400,11 +400,11 @@ void GameScene::Draw() {
 		break;
 
 	case END:
-		debugText_->SetPos(1280 / 2, 300);
-		debugText_->Printf(" E N D ");
+		//debugText_->SetPos(1280 / 2, 300);
+		//debugText_->Printf(" E N D ");
 
-		debugText_->SetPos(1280 / 2, 720 / 2);
-		debugText_->Printf(" PRESS B BUTTON ");
+		//debugText_->SetPos(1280 / 2, 720 / 2);
+		//debugText_->Printf(" PRESS B BUTTON ");
 
 		break;
 	case GAME:
