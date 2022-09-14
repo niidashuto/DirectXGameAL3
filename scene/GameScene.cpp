@@ -44,7 +44,8 @@ void GameScene::Initialize(GameScene* gameScene) {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
-	//soundDataHandle_ = audio_->LoadWave("sound/Irregular.wav");
+	soundDataHandle_ = audio_->LoadWave("sound/2.mp3");
+	soundDataHandle2_ = audio_->LoadWave("sound/bottun.mp3");
 
 	// 軸方向表示の表示を有効にする
 	//AxisIndicator::GetInstance()->SetVisible(true);
@@ -115,9 +116,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	LoadEnemyPopData();
 
-	//voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
-
-	
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 }
 
 //乱数シード生成器
@@ -170,11 +169,13 @@ void GameScene::Update() {
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && texture == 0) {
 			texture = 1;
 			waitTimer = 30;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
 			&& texture == 1 && waitTimer <= 0) {
 			texture = 2;
 			waitTimer = 30;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
 			&& texture == 2 && waitTimer <= 0) {
@@ -183,6 +184,7 @@ void GameScene::Update() {
 			gameTimer = 60 * 60;
 			waitTimer = 30;
 			texture = 0;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 
 		if (texture >= 1) {
@@ -214,6 +216,7 @@ void GameScene::Update() {
 		}
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 			stage = TITLE;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 
 		break;
@@ -225,6 +228,7 @@ void GameScene::Update() {
 		}
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 			stage = GAME;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 		//自キャラの更新
 		player_->Update(viewProjection_, modelBullet_, item_);
@@ -296,6 +300,7 @@ void GameScene::Update() {
 			{
 				stage = PAUSE;
 				waitTimer = 30;
+				voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 			}
 		}
 		waitTimer--;
@@ -312,6 +317,7 @@ void GameScene::Update() {
 			{
 				stage = GAME;
 				waitTimer = 30;
+				voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 			}
 		}
 		waitTimer--;
@@ -340,6 +346,7 @@ void GameScene::Update() {
 		}
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 			stage = TITLE;
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
 		}
 		break;
 	}

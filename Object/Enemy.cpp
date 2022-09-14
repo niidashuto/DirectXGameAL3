@@ -15,6 +15,10 @@ void Enemy::Initialize(Model* model, Vector3 trans) {
 	//textureHandle_ = TextureManager::Load("ddddog.png");
 	SetTexture();
 
+	soundDataHandle_ = audio_->LoadWave("sound/cow.mp3");
+	soundDataHandle2_ = audio_->LoadWave("sound/pig.mp3");
+	soundDataHandle3_ = audio_->LoadWave("sound/tori.mp3");
+
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
@@ -46,6 +50,12 @@ void Enemy::Initialize(Vector3 trans) {
 
 	// テクスチャ読み込み
 	SetTexture();
+
+	audio_ = Audio::GetInstance();
+
+	soundDataHandle_ = audio_->LoadWave("sound/cow.mp3");
+	soundDataHandle2_ = audio_->LoadWave("sound/pig.mp3");
+	soundDataHandle3_ = audio_->LoadWave("sound/tori.mp3");
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -228,12 +238,22 @@ void Enemy::OnCollision() {
 	if (hp <= 0) {
 		player_->AddPoint();
 		isDead_ = true;
-	
+		
 		Vector3 enePos = GetWorldPosition();
 		std::unique_ptr<Food> newFood = std::make_unique<Food>();
 		newFood->Initialize(enePos, tribe);
 		newFood->SetTribe(tribe);
 		gameScene_->AddFood(std::move(newFood));
+
+		if (tribe == Cow) {
+			voiceHandle_ = audio_->PlayWave(soundDataHandle_, false);
+		}
+		else if (tribe == Chicken) {
+			voiceHandle3_ = audio_->PlayWave(soundDataHandle3_, false);
+		}
+		else if (tribe == Pig) {
+			voiceHandle2_ = audio_->PlayWave(soundDataHandle2_, false);
+		}
 	}
 }
 
