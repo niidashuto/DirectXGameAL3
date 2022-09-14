@@ -1,4 +1,5 @@
 #pragma once
+#include "Audio.h"
 #include "Affin.h"
 #include "DebugText.h"
 #include "EnemyBullet.h"
@@ -43,9 +44,21 @@ class Enemy {
 	//モデル
 	Model* model_ = nullptr;
 
+	//音声再生ハンドル
+	uint32_t voiceHandle_ = 0;
+	uint32_t voiceHandle2_ = 0;
+	uint32_t voiceHandle3_ = 0;
+
+	//サウンドデーターハンドル
+	uint32_t soundDataHandle_ = 0;
+	uint32_t soundDataHandle2_ = 0;
+	uint32_t soundDataHandle3_ = 0;
+
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
+
+	Audio* audio_;
 	// input
 	Input* input_ = nullptr;
 	// debugText
