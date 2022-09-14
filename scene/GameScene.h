@@ -21,7 +21,8 @@ enum stage {
 	TITLE,
 	INFO,
 	GAME,
-	END
+	END,
+	PAUSE
 };
 
 /// <summary>
@@ -153,6 +154,7 @@ class GameScene {
 	// ステージ
 	int stage = 0;
 	int time=0;
+	int waitTimer = 10;
 
 	
 	/// <summary>

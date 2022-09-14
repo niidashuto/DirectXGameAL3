@@ -223,20 +223,25 @@ Vector3 Enemy::GetWorldPosition() {
 /// 衝突を検知したら呼び出されるコールバック関数
 /// </summary>
 void Enemy::OnCollision() {
-	player_->AddPoint();
 
-	Vector3 enePos = GetWorldPosition();
-	std::unique_ptr<Food> newFood = std::make_unique<Food>();
-	newFood->Initialize(enePos, tribe);
-	newFood->SetTribe(tribe);
-	gameScene_->AddFood(std::move(newFood));
-	isDead_ = true;
+	hp -= 1;
+	if (hp <= 0) {
+		player_->AddPoint();
+		isDead_ = true;
+	
+		Vector3 enePos = GetWorldPosition();
+		std::unique_ptr<Food> newFood = std::make_unique<Food>();
+		newFood->Initialize(enePos, tribe);
+		newFood->SetTribe(tribe);
+		gameScene_->AddFood(std::move(newFood));
+	}
 }
 
 void Enemy::SetTexture() {
 	switch (tribe)
 	{
 	case 0:
+
 		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 1:
@@ -250,6 +255,7 @@ void Enemy::SetTexture() {
 		break;
 	case 4:
 		textureHandle_ = TextureManager::Load("tex/noumintex.png");
+
 		break;
 	case 5:
 		textureHandle_ = TextureManager::Load("tex/noumintex.png");
@@ -276,37 +282,51 @@ void Enemy::SetTexture() {
 void Enemy::SetModel() {
 	switch (tribe){
 	case 0:
-		model_ = Model::CreateFromOBJ("noumin", true);
+
+		model_ = Model::CreateFromOBJ("buta", true);
+		hp = 10;
 		break;
 	case 1:
-		model_ = Model::CreateFromOBJ("buta", true);
+		model_ = Model::CreateFromOBJ("usi", true);
+		hp = 15;
 		break;
 	case 2:
-		model_ = Model::CreateFromOBJ("usi", true);
+		model_ = Model::CreateFromOBJ("tori", true);
+		hp = 7;
 		break;
 	case 3:
-		model_ = Model::CreateFromOBJ("tori", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	case 4:
 		model_ = Model::CreateFromOBJ("noumin", true);
+
+		hp = 20;
 		break;
 	case 5:
 		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	case 6:
 		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	case 7:
 		model_ = Model::CreateFromOBJ("noumin", true);
+
+		hp = 20;
 		break;
 	case 8:
 		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	case 9:
 		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	case 10:
 		model_ = Model::CreateFromOBJ("noumin", true);
+		hp = 20;
 		break;
 	}
 
