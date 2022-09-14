@@ -106,6 +106,10 @@ class GameScene {
 	Sprite* clear_ = nullptr;
 	Sprite* number_[10] = { nullptr };
 	Sprite* number2_[10] = { nullptr };
+	Sprite* number3_[10] = { nullptr };
+	Sprite* number4_[10] = { nullptr };
+	Sprite* number5_[10] = { nullptr };
+	Sprite* number6_[10] = { nullptr };
 
 	// 3Dモデル
 	Model* model_ = nullptr;
@@ -167,6 +171,7 @@ class GameScene {
 	int waitTimer = 30;
 	int texture = 0;
 	int gameTimer = 60 * 60;
+	int score = 0;
 
 	
 	/// <summary>

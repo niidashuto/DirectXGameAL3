@@ -63,8 +63,11 @@ class Player {
 	int sppedBuffTimer = 900;
 	int powerBuffTimer = 900;
 
+	int score;
+
   public:
 	float r = 1.0f;
+	int GetScore() { return score; }
 
   public:
 	/// <summary>
