@@ -99,6 +99,8 @@ class GameScene {
 	//スプライト
 	//Sprite* sprite_ = nullptr;
 	Sprite* title_ = nullptr;
+	Sprite* controller_ = nullptr;
+	Sprite* menu_ = nullptr;
 	Sprite* gameOver_ = nullptr;
 
 	// 3Dモデル
@@ -119,6 +121,8 @@ class GameScene {
 	uint32_t titleTextureHandle_ = 0u;
 	uint32_t gameOverTextureHandle_ = 0u;
 	uint32_t eneTextureHandle_ = 0u;
+	uint32_t controllerTextureHandle_ = 0u;
+	uint32_t menuTextureHandle_ = 0u;
 
 	//  object
 	std::unique_ptr<RailCamera> railCamera_;
@@ -154,7 +158,8 @@ class GameScene {
 	// ステージ
 	int stage = 0;
 	int time=0;
-	int waitTimer = 10;
+	int waitTimer = 30;
+	int texture = 0;
 
 	
 	/// <summary>
