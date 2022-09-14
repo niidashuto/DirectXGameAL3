@@ -336,6 +336,7 @@ void Player::Attack(Model* model) {
 			std::unique_ptr<PlayerBullet> newBullet2 = std::make_unique<PlayerBullet>();
 			newBullet->Initialize(bulletModel_, GetWorldPosition() += twoWay, velocity);
 			newBullet2->Initialize(bulletModel_, GetWorldPosition() -= twoWay, velocity);
+			bullets_.push_back(std::move(newBullet));
 			bullets_.push_back(std::move(newBullet2));
 
 			attackBuffTimer--;

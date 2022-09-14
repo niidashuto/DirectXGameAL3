@@ -99,6 +99,7 @@ class GameScene {
 	//スプライト
 	//Sprite* sprite_ = nullptr;
 	Sprite* title_ = nullptr;
+	Sprite* gameOver_ = nullptr;
 
 	// 3Dモデル
 	Model* model_ = nullptr;
@@ -116,6 +117,7 @@ class GameScene {
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 	uint32_t titleTextureHandle_ = 0u;
+	uint32_t gameOverTextureHandle_ = 0u;
 	uint32_t eneTextureHandle_ = 0u;
 
 	//  object
