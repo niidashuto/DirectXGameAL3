@@ -424,8 +424,8 @@ void GameScene::Draw() {
 		for (std::unique_ptr<Food>& food : foods_) {
 			food->Draw(railCamera_->GetViewProjection());
 		}
-		debugText_->SetPos(1280 / 2, 600);
-		debugText_->Printf(" SHOT RB  ");
+		// debugText_->SetPos(1280 / 2, 600);
+		// debugText_->Printf(" SHOT RB  ");
 		break;
 	}
 	// 3Dモデル描画
