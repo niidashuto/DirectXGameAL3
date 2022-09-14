@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("No.2028");
+	win->CreateGameWindow("No.2028_アラケ_ユウトLE2Bニイダ_シュウトLE2Bフジタ_ケンタロウ_ThrowCook");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
