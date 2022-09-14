@@ -22,6 +22,12 @@ GameScene::~GameScene() {
 	delete title_;
 	delete controller_;
 	delete menu_;
+	delete gameOver_;
+	delete clear_;
+	for (int i = 0; i < 10; i++) {
+		delete number_[i];
+		delete number2_[i];
+	}
 }
 
 
@@ -55,14 +61,34 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	titleTextureHandle_ = TextureManager::Load("title.png");
 	title_ = Sprite::Create(titleTextureHandle_, { 1,1 });
+
 	gameOverTextureHandle_ = TextureManager::Load("gameover.png");
 	gameOver_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
+
+	clearTextureHandle_ = TextureManager::Load("gameover.png");
+	clear_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
 
 	controllerTextureHandle_ = TextureManager::Load("sousa2.png");
 	controller_ = Sprite::Create(controllerTextureHandle_, { 1,1 });
 
 	menuTextureHandle_ = TextureManager::Load("menu2.png");
 	menu_ = Sprite::Create(menuTextureHandle_, { 1,1 });
+
+	numTextureHandle_[0] = TextureManager::Load("suuzi/0.png");
+	numTextureHandle_[1] = TextureManager::Load("suuzi/1.png");
+	numTextureHandle_[2] = TextureManager::Load("suuzi/2.png");
+	numTextureHandle_[3] = TextureManager::Load("suuzi/3.png");
+	numTextureHandle_[4] = TextureManager::Load("suuzi/4.png");
+	numTextureHandle_[5] = TextureManager::Load("suuzi/5.png");
+	numTextureHandle_[6] = TextureManager::Load("suuzi/6.png");
+	numTextureHandle_[7] = TextureManager::Load("suuzi/7.png");
+	numTextureHandle_[8] = TextureManager::Load("suuzi/8.png");
+	numTextureHandle_[9] = TextureManager::Load("suuzi/9.png");
+
+	for (int i = 0; i < 10; i++) {
+		number_[i] = Sprite::Create(numTextureHandle_[i], { 1120,50 });
+		number2_[i] = Sprite::Create(numTextureHandle_[i], { 1170,50 });
+	}
 
 	// 
 	//自キャラの初期化
@@ -145,6 +171,7 @@ void GameScene::Update() {
 		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
 			&& texture == 2 && waitTimer <= 0) {
 			stage = GAME;
+			gameTimer = 60 * 60;
 			waitTimer = 30;
 			texture = 0;
 		}
@@ -196,6 +223,11 @@ void GameScene::Update() {
 
 		break;
 	case GAME:
+
+		if (gameTimer <= 0) {
+			stage = CLEAR;
+		}
+
 		time++;
 		if (player_->IsDead() == true) {
 			stage = END;
@@ -257,6 +289,7 @@ void GameScene::Update() {
 			}
 		}
 		waitTimer--;
+		gameTimer--;
 
 		break;
 	case PAUSE:
@@ -273,6 +306,31 @@ void GameScene::Update() {
 		}
 		waitTimer--;
 
+		break;
+	case CLEAR:
+		gameScene_->Initialize(gameScene_);
+		//XINPUT_STATE joyState;
+		time = 0;
+
+		// 自キャラと敵弾すべての当たり判定
+		for (const std::unique_ptr<EnemyBullet>& bullet : enemyBullets_) {
+			bullet->IsDeath();
+		}
+		for (const std::unique_ptr<Enemy>& enemy : enemy_) {
+			enemy->IsDeath();
+		}
+		for (const std::unique_ptr<Food>& food : foods_) {
+			food->IsDeath();
+		}
+
+
+		if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+
+			return;
+		}
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
+			stage = TITLE;
+		}
 		break;
 	}
 
@@ -382,13 +440,66 @@ void GameScene::Draw() {
 	case END:
 		gameOver_->Draw();
 		break;
+	case CLEAR:
+		clear_->Draw();
+		break;
 	case INFO:
 	case GAME:
 		player_->DrawUI();
 		item_->SpriteDraw();
+		if (gameTimer >= 3000) {
+			number_[5]->Draw();
+		}
+		else if (gameTimer >= 2400) {
+			number_[4]->Draw();
+		}
+		else if (gameTimer >= 1800) {
+			number_[3]->Draw();
+		}
+		else if (gameTimer >= 1200) {
+			number_[2]->Draw();
+		}
+		else if (gameTimer >= 600) {
+			number_[1]->Draw();
+		}
+		else if (gameTimer >= 0) {
+			number_[0]->Draw();
+		}
+
+		if ((gameTimer % 600) >= 540) {
+			number2_[9]->Draw();
+		}
+		else if ((gameTimer % 600) >= 480) {
+			number2_[8]->Draw();
+		}
+		else if ((gameTimer % 600) >= 420) {
+			number2_[7]->Draw();
+		}
+		else if ((gameTimer % 600) >= 360) {
+			number2_[6]->Draw();
+		}
+		else if ((gameTimer % 600) >= 300) {
+			number2_[5]->Draw();
+		}
+		else if ((gameTimer % 600) >= 240) {
+			number2_[4]->Draw();
+		}
+		else if ((gameTimer % 600) >= 180) {
+			number2_[3]->Draw();
+		}
+		else if ((gameTimer % 600) >= 120) {
+			number2_[2]->Draw();
+		}
+		else if ((gameTimer % 600) >= 60) {
+			number2_[1]->Draw();
+		}
+		else if ((gameTimer % 600) >= 0) {
+			number2_[0]->Draw();
+		}
 		break;
 	case PAUSE:
 		menu_->Draw();
+		break;
 	}
 
 
