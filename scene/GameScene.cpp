@@ -20,6 +20,8 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete item_;
 	delete title_;
+	delete controller_;
+	delete menu_;
 }
 
 
@@ -53,6 +55,12 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	titleTextureHandle_ = TextureManager::Load("title.png");
 	title_ = Sprite::Create(titleTextureHandle_, { 1,1 });
+
+	controllerTextureHandle_ = TextureManager::Load("sousa2.png");
+	controller_ = Sprite::Create(controllerTextureHandle_, { 1,1 });
+
+	menuTextureHandle_ = TextureManager::Load("menu2.png");
+	menu_ = Sprite::Create(menuTextureHandle_, { 1,1 });
 
 	// 
 	//自キャラの初期化
@@ -123,10 +131,25 @@ void GameScene::Update() {
 
 			return;
 		}
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && texture == 0) {
+			texture = 1;
+			waitTimer = 30;
+		}
+		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
+			&& texture == 1 && waitTimer <= 0) {
+			texture = 2;
+			waitTimer = 30;
+		}
+		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
+			&& texture == 2 && waitTimer <= 0) {
 			stage = GAME;
+			waitTimer = 30;
+			texture = 0;
 		}
 
+		if (texture >= 1) {
+			waitTimer--;
+		}
 		break;
 
 	case END:
@@ -228,7 +251,7 @@ void GameScene::Update() {
 			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_START)
 			{
 				stage = PAUSE;
-				waitTimer = 10;
+				waitTimer = 30;
 			}
 		}
 		waitTimer--;
@@ -243,7 +266,7 @@ void GameScene::Update() {
 			if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_START)
 			{
 				stage = GAME;
-				waitTimer = 10;
+				waitTimer = 30;
 			}
 		}
 		waitTimer--;
@@ -343,8 +366,15 @@ void GameScene::Draw() {
 
 	switch (stage) {
 	case TITLE:
-
-		title_->Draw();
+		if (texture == 0) {
+			title_->Draw();
+		}
+		else if (texture == 1) {
+			controller_->Draw();
+		}
+		else if (texture == 2) {
+			menu_->Draw();
+		}
 
 		break;
 	case END:
@@ -355,6 +385,8 @@ void GameScene::Draw() {
 		player_->DrawUI();
 		item_->SpriteDraw();
 		break;
+	case PAUSE:
+		menu_->Draw();
 	}
 
 
