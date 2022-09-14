@@ -84,7 +84,7 @@ class GameScene {
 	void UpdateEnemyPopCommands(int num);
 
 	// リセット
-	void Reset();
+	void Reset(GameScene* gameScene);
 
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
