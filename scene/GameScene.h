@@ -22,7 +22,8 @@ enum stage {
 	INFO,
 	GAME,
 	END,
-	PAUSE
+	PAUSE,
+	CLEAR
 };
 
 /// <summary>
@@ -102,6 +103,9 @@ class GameScene {
 	Sprite* controller_ = nullptr;
 	Sprite* menu_ = nullptr;
 	Sprite* gameOver_ = nullptr;
+	Sprite* clear_ = nullptr;
+	Sprite* number_[10] = { nullptr };
+	Sprite* number2_[10] = { nullptr };
 
 	// 3Dモデル
 	Model* model_ = nullptr;
@@ -120,9 +124,11 @@ class GameScene {
 	uint32_t textureHandle_ = 0u;
 	uint32_t titleTextureHandle_ = 0u;
 	uint32_t gameOverTextureHandle_ = 0u;
+	uint32_t clearTextureHandle_ = 0u;
 	uint32_t eneTextureHandle_ = 0u;
 	uint32_t controllerTextureHandle_ = 0u;
 	uint32_t menuTextureHandle_ = 0u;
+	uint32_t numTextureHandle_[10] = { 0u };
 
 	//  object
 	std::unique_ptr<RailCamera> railCamera_;
@@ -160,6 +166,7 @@ class GameScene {
 	int time=0;
 	int waitTimer = 30;
 	int texture = 0;
+	int gameTimer = 60 * 60;
 
 	
 	/// <summary>
