@@ -116,7 +116,7 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	LoadEnemyPopData();
 
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true,0.1f);
 }
 
 //乱数シード生成器
@@ -194,7 +194,7 @@ void GameScene::Update() {
 
 	case END:
 
-		gameScene_->Initialize(gameScene_);
+		gameScene_->Reset(gameScene_);
 		//XINPUT_STATE joyState;
 		time = 0;
 
@@ -324,7 +324,7 @@ void GameScene::Update() {
 
 		break;
 	case CLEAR:
-		gameScene_->Initialize(gameScene_);
+		gameScene_->Reset(gameScene_);
 		//XINPUT_STATE joyState;
 		time = 0;
 
@@ -1003,4 +1003,86 @@ void GameScene::UpdateEnemyPopCommands(int num) {
 }
 
 // リセット
-void GameScene::Reset() {}
+void GameScene::Reset(GameScene* gameScene) {
+	
+		gameScene_ = gameScene;
+		debugCamera_ = new DebugCamera(1280, 720);
+		dxCommon_ = DirectXCommon::GetInstance();
+		input_ = Input::GetInstance();
+		audio_ = Audio::GetInstance();
+		debugText_ = DebugText::GetInstance();
+
+		soundDataHandle_ = audio_->LoadWave("sound/2.mp3");
+		soundDataHandle2_ = audio_->LoadWave("sound/bottun.mp3");
+
+		// 軸方向表示の表示を有効にする
+		//AxisIndicator::GetInstance()->SetVisible(true);
+		AxisIndicator::GetInstance()->SetVisible(false);
+		// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
+		AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+		//自キャラの生成
+		skydome_ = std::make_unique<Skydome>();
+		railCamera_ = std::make_unique<RailCamera>();
+		player_ = new Player();
+		model_ = Model::Create();
+		modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+		modelBullet_ = Model::CreateFromOBJ("bulletKnife", true);
+		modelPlayer_ = Model::CreateFromOBJ("knife", true);
+		modelEnemy_ = Model::CreateFromOBJ("cube", true);
+		item_ = new Item();
+
+		titleTextureHandle_ = TextureManager::Load("title.png");
+		title_ = Sprite::Create(titleTextureHandle_, { 1,1 });
+
+		gameOverTextureHandle_ = TextureManager::Load("gameover.png");
+		gameOver_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
+
+		clearTextureHandle_ = TextureManager::Load("gameclear2.png");
+		clear_ = Sprite::Create(clearTextureHandle_, { 1,-20 });
+
+		controllerTextureHandle_ = TextureManager::Load("sousa2.png");
+		controller_ = Sprite::Create(controllerTextureHandle_, { 1,1 });
+
+		menuTextureHandle_ = TextureManager::Load("menu2.png");
+		menu_ = Sprite::Create(menuTextureHandle_, { 1,1 });
+
+		numTextureHandle_[0] = TextureManager::Load("suuzi/0.png");
+		numTextureHandle_[1] = TextureManager::Load("suuzi/1.png");
+		numTextureHandle_[2] = TextureManager::Load("suuzi/2.png");
+		numTextureHandle_[3] = TextureManager::Load("suuzi/3.png");
+		numTextureHandle_[4] = TextureManager::Load("suuzi/4.png");
+		numTextureHandle_[5] = TextureManager::Load("suuzi/5.png");
+		numTextureHandle_[6] = TextureManager::Load("suuzi/6.png");
+		numTextureHandle_[7] = TextureManager::Load("suuzi/7.png");
+		numTextureHandle_[8] = TextureManager::Load("suuzi/8.png");
+		numTextureHandle_[9] = TextureManager::Load("suuzi/9.png");
+
+		for (int i = 0; i < 10; i++) {
+			number_[i] = Sprite::Create(numTextureHandle_[i], { 1120,50 });
+			number2_[i] = Sprite::Create(numTextureHandle_[i], { 1170,50 });
+			number3_[i] = Sprite::Create(numTextureHandle_[i], { 530,400 });
+			number4_[i] = Sprite::Create(numTextureHandle_[i], { 580,400 });
+			number5_[i] = Sprite::Create(numTextureHandle_[i], { 630,400 });
+			number6_[i] = Sprite::Create(numTextureHandle_[i], { 680,400 });
+		}
+
+		// 
+		//自キャラの初期化
+		player_->Initialize(modelPlayer_, textureHandle_);
+
+		//ビュープロジェクションの初期化
+		viewProjection_.Initialize();
+
+		railCamera_->Initialize(Vector3{ 0.0f, 0.0f, -80.0f }, Vector3{ 0.0f, 0.0f, 0.0f });
+
+		player_->SetParent(railCamera_->GetWorldTransform());
+
+		skydome_->Initialize(modelSkydome_);
+
+		item_->Initialize();
+
+		LoadEnemyPopData();
+
+	
+}
