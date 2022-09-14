@@ -457,37 +457,37 @@ int Player::OffFlag(int playerState, int buff) {
 }
 
 int Player::CheckPlayerFlag(int playerState, Item* item) {
-	if (item->CURRY()) {
+	if (item->CURRY() == true) {
 		playerState = OnFlag(playerState, TWOWAY);
 		item->DrawFlag(0);
 		score += 100;
 	}
-	else if (item->YAKINIKU()) {
+	else if (item->YAKINIKU() == true) {
 		playerState = OnFlag(playerState, THREEWAY);
 		item->DrawFlag(1);
 		score += 100;
 	}
-	else if (item->MEDAMAYAKI()) {
+	else if (item->MEDAMAYAKI() == true) {
 		playerState = OnFlag(playerState, SPEEDBUFF);
 		item->DrawFlag(2);
 		score += 100;
 	}
-	else if (item->NIKUJAGA()) {
+	else if (item->NIKUJAGA() == true) {
 		playerState = OnFlag(playerState, POWERBUFF);
 		item->DrawFlag(3);
 		score += 100;
 	}
-	else if (item->SALADA()) {
+	else if (item->SALADA() == true) {
 		item->DrawFlag(4);
 		hp++;
 		score += 100;
 	}
-	else if (item->SIOTOMATO()) {
+	else if (item->SIOTOMATO() == true) {
 		playerState = OnFlag(playerState, POWERDEBUFF);
 		playerState = OnFlag(playerState, SPEEDDEBUFF);
 		item->DrawFlag(5);
 	}
-	else if (item->OMURAISU()) {
+	else if (item->OMURAISU() == true) {
 		playerState = OnFlag(playerState, POWERBUFF);
 		playerState = OnFlag(playerState, SPEEDBUFF);
 		hp++;

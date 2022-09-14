@@ -66,7 +66,6 @@ private:
 
 	int item = 0b0000000;
 	ItemStrage strage[5];
-	Player* player_;
 
 	int buffDrawTime[7];
 
