@@ -27,7 +27,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	  worldTransform_.translation_.x, worldTransform_.translation_.y,
 	  worldTransform_.translation_.z);
 
-	hp = 100;
+	hp = 20;
 	point = 0;
 	score = 0;
 }
@@ -170,16 +170,16 @@ void Player::Update(ViewProjection viewProjection, Model* model, Item* item) {
 	  "player : x,%f  y,%f z,%f", worldTransform_.rotation_.x, worldTransform_.rotation_.y,
 	  worldTransform_.rotation_.z);*/
 
-	debugText_->SetPos(600, 500);
-	debugText_->Printf("crushing : %d", point);
+	// debugText_->SetPos(600, 500);
+	// debugText_->Printf("crushing : %d", point);
 	debugText_->SetPos(600, 550);
 	debugText_->Printf("   hp    : %d", hp);
 
-	debugText_->SetPos(100, 150);
-	debugText_->Printf("%d", worldTransform_.translation_.z);
+	// debugText_->SetPos(100, 150);
+	// debugText_->Printf("%d", worldTransform_.translation_.z);
 
-	debugText_->SetPos(600, 150);
-	debugText_->Printf("%d %d", playerState, sppedBuffTimer);
+	// debugText_->SetPos(600, 150);
+	// debugText_->Printf("%d %d", playerState, sppedBuffTimer);
 #pragma endregion
 }
 

@@ -58,8 +58,8 @@ void Item::Update() {
 	setSizePosAllItem(size);
 	setSizePosRyouri(sizeRyo);
 
-	debugText_->SetPos(600, 300);
-	debugText_->Printf("%d	%d	%d	%d	%d", strage[0].tribe, strage[1].tribe, strage[2].tribe, strage[3].tribe, strage[4].tribe);
+	// debugText_->SetPos(600, 300);
+	// debugText_->Printf("%d	%d	%d	%d	%d", strage[0].tribe, strage[1].tribe, strage[2].tribe, strage[3].tribe, strage[4].tribe);
 
 }
 void Item::Draw() {
