@@ -53,6 +53,8 @@ void GameScene::Initialize(GameScene* gameScene) {
 
 	titleTextureHandle_ = TextureManager::Load("title.png");
 	title_ = Sprite::Create(titleTextureHandle_, { 1,1 });
+	gameOverTextureHandle_ = TextureManager::Load("gameover.png");
+	gameOver_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
 
 	// 
 	//自キャラの初期化
@@ -322,7 +324,7 @@ void GameScene::Draw() {
 
 		break;
 	case END:
-
+		gameOver_->Draw();
 		break;
 	case INFO:
 	case GAME:

@@ -33,7 +33,7 @@ void Item::Initialize() {
 
 	scale = spriteItem1[0]->GetSize();
   
-	pos = spriteItem1[0]->GetPosition();
+	//pos = spriteItem1[0]->GetPosition();
 
 	posItem = spriteItem1[0]->GetPosition();
 	scaleRyo = spriteRyouri1[0]->GetSize();

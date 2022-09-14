@@ -87,34 +87,34 @@ void Food::SetTexture(int tribe) {
 	switch (tribe)
 	{
 	case 0:
-		textureHandle_ = TextureManager::Load("materialTex/0.png");
+		textureHandle_ = TextureManager::Load("item/11banana.png");
 		break;
 	case 1:
-		textureHandle_ = TextureManager::Load("materialTex/1.png");
+		textureHandle_ = TextureManager::Load("item/1butaniku.png");
 		break;
 	case 2:
-		textureHandle_ = TextureManager::Load("materialTex/2.png");
+		textureHandle_ = TextureManager::Load("item/2gyuniku.png");
 		break;
 	case 3:
-		textureHandle_ = TextureManager::Load("materialTex/3.png");
+		textureHandle_ = TextureManager::Load("item/4tamago.png");
 		break;
 	case 4:
-		textureHandle_ = TextureManager::Load("materialTex/4.png");
+		textureHandle_ = TextureManager::Load("item/5retasu.png");
 		break;
 	case 5:
-		textureHandle_ = TextureManager::Load("materialTex/5.png");
+		textureHandle_ = TextureManager::Load("item/7tomato.png");
 		break;
 	case 6:
-		textureHandle_ = TextureManager::Load("materialTex/6.png");
+		textureHandle_ = TextureManager::Load("item/6imo.png");
 		break;
 	case 7:
-		textureHandle_ = TextureManager::Load("materialTex/7.png");
+		textureHandle_ = TextureManager::Load("item/8ninjin.png");
 		break;
 	case 8:
-		textureHandle_ = TextureManager::Load("materialTex/8.png");
+		textureHandle_ = TextureManager::Load("item/9tamanegi.png");
 		break;
 	case 9:
-		textureHandle_ = TextureManager::Load("materialTex/9.png");
+		textureHandle_ = TextureManager::Load("item/10kome.png");
 		break;
 	case 10:
 		textureHandle_ = TextureManager::Load("materialTex/10.png");
@@ -125,37 +125,37 @@ void Food::SetTexture(int tribe) {
 void Food::SetModel(int tribe) {
 	switch (tribe) {
 	case 0:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 1:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 2:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 3:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 4:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 5:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 6:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 7:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 8:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 9:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 		break;
 	case 10:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("kyu", true);
 	}
 }
 

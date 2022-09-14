@@ -109,10 +109,10 @@ void Enemy::Update(Model* model) {
 		bullet->Update();
 	}*/
 
-	debugText_->SetPos(10, 50);
-	debugText_->Printf(
-		"enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
-		worldTransform_.translation_.z, tribe);
+	//debugText_->SetPos(10, 50);
+	//debugText_->Printf(
+	//	"enemy : x,%f  y,%f z,%f,%f", worldTransform_.translation_.x, worldTransform_.translation_.y,
+	//	worldTransform_.translation_.z, tribe);
 
 }
 
@@ -237,37 +237,37 @@ void Enemy::SetTexture() {
 	switch (tribe)
 	{
 	case 0:
-		textureHandle_ = TextureManager::Load("eneTex/0.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 1:
-		textureHandle_ = TextureManager::Load("eneTex/1.png");
+		textureHandle_ = TextureManager::Load("tex/butatex.png");
 		break;
 	case 2:
-		textureHandle_ = TextureManager::Load("eneTex/2.png");
+		textureHandle_ = TextureManager::Load("tex/usitex.png");
 		break;
 	case 3:
-		textureHandle_ = TextureManager::Load("eneTex/3.png");
+		textureHandle_ = TextureManager::Load("tex/toritex.png");
 		break;
 	case 4:
-		textureHandle_ = TextureManager::Load("eneTex/4.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 5:
-		textureHandle_ = TextureManager::Load("eneTex/5.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 6:
-		textureHandle_ = TextureManager::Load("eneTex/6.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 7:
-		textureHandle_ = TextureManager::Load("eneTex/7.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 8:
-		textureHandle_ = TextureManager::Load("eneTex/8.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 9:
-		textureHandle_ = TextureManager::Load("eneTex/9.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	case 10:
-		textureHandle_ = TextureManager::Load("eneTex/10.png");
+		textureHandle_ = TextureManager::Load("tex/noumintex.png");
 		break;
 	}
 
@@ -276,37 +276,37 @@ void Enemy::SetTexture() {
 void Enemy::SetModel() {
 	switch (tribe){
 	case 0:
-		model_ = Model::CreateFromOBJ("buta", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 1:
-		model_ = Model::CreateFromOBJ("usi", true);
+		model_ = Model::CreateFromOBJ("buta", true);
 		break;
 	case 2:
-		model_ = Model::CreateFromOBJ("tori", true);
+		model_ = Model::CreateFromOBJ("usi", true);
 		break;
 	case 3:
 		model_ = Model::CreateFromOBJ("tori", true);
 		break;
 	case 4:
-		model_ = Model::CreateFromOBJ("tori", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 5:
-		model_ = Model::CreateFromOBJ("tori", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 6:
 		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 7:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 8:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 9:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	case 10:
-		model_ = Model::CreateFromOBJ("cube", true);
+		model_ = Model::CreateFromOBJ("noumin", true);
 		break;
 	}
 
