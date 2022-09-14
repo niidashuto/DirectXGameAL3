@@ -29,6 +29,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	hp = 100;
 	point = 0;
+	score = 0;
 }
 
 /// <summary>
@@ -459,22 +460,27 @@ int Player::CheckPlayerFlag(int playerState, Item* item) {
 	if (item->CURRY()) {
 		playerState = OnFlag(playerState, TWOWAY);
 		item->DrawFlag(0);
+		score += 100;
 	}
 	else if (item->YAKINIKU()) {
 		playerState = OnFlag(playerState, THREEWAY);
 		item->DrawFlag(1);
+		score += 100;
 	}
 	else if (item->MEDAMAYAKI()) {
 		playerState = OnFlag(playerState, SPEEDBUFF);
 		item->DrawFlag(2);
+		score += 100;
 	}
 	else if (item->NIKUJAGA()) {
 		playerState = OnFlag(playerState, POWERBUFF);
 		item->DrawFlag(3);
+		score += 100;
 	}
 	else if (item->SALADA()) {
 		item->DrawFlag(4);
 		hp++;
+		score += 100;
 	}
 	else if (item->SIOTOMATO()) {
 		playerState = OnFlag(playerState, POWERDEBUFF);
@@ -486,6 +492,7 @@ int Player::CheckPlayerFlag(int playerState, Item* item) {
 		playerState = OnFlag(playerState, SPEEDBUFF);
 		hp++;
 		item->DrawFlag(6);
+		score += 100;
 	}
 
 	return playerState;

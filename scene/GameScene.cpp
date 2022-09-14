@@ -27,6 +27,10 @@ GameScene::~GameScene() {
 	for (int i = 0; i < 10; i++) {
 		delete number_[i];
 		delete number2_[i];
+		delete number3_[i];
+		delete number4_[i];
+		delete number5_[i];
+		delete number6_[i];
 	}
 }
 
@@ -65,8 +69,8 @@ void GameScene::Initialize(GameScene* gameScene) {
 	gameOverTextureHandle_ = TextureManager::Load("gameover.png");
 	gameOver_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
 
-	clearTextureHandle_ = TextureManager::Load("gameover.png");
-	clear_ = Sprite::Create(gameOverTextureHandle_, { 1,-20 });
+	clearTextureHandle_ = TextureManager::Load("gameclear2.png");
+	clear_ = Sprite::Create(clearTextureHandle_, { 1,-20 });
 
 	controllerTextureHandle_ = TextureManager::Load("sousa2.png");
 	controller_ = Sprite::Create(controllerTextureHandle_, { 1,1 });
@@ -88,6 +92,10 @@ void GameScene::Initialize(GameScene* gameScene) {
 	for (int i = 0; i < 10; i++) {
 		number_[i] = Sprite::Create(numTextureHandle_[i], { 1120,50 });
 		number2_[i] = Sprite::Create(numTextureHandle_[i], { 1170,50 });
+		number3_[i] = Sprite::Create(numTextureHandle_[i], { 530,400 });
+		number4_[i] = Sprite::Create(numTextureHandle_[i], { 580,400 });
+		number5_[i] = Sprite::Create(numTextureHandle_[i], { 630,400 });
+		number6_[i] = Sprite::Create(numTextureHandle_[i], { 680,400 });
 	}
 
 	// 
@@ -171,6 +179,7 @@ void GameScene::Update() {
 		else if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER
 			&& texture == 2 && waitTimer <= 0) {
 			stage = GAME;
+			score = 0;
 			gameTimer = 60 * 60;
 			waitTimer = 30;
 			texture = 0;
@@ -225,6 +234,7 @@ void GameScene::Update() {
 	case GAME:
 
 		if (gameTimer <= 0) {
+			score += player_->GetScore();
 			stage = CLEAR;
 		}
 
@@ -334,6 +344,7 @@ void GameScene::Update() {
 		break;
 	}
 
+
 }
 
 void GameScene::Draw() {
@@ -442,6 +453,30 @@ void GameScene::Draw() {
 		break;
 	case CLEAR:
 		clear_->Draw();
+		for (int i = 9; i >= 0; i--)
+		{
+			if ((score % 100) >= i * 10) {
+				number5_[i]->Draw();
+				break;
+			}
+		}
+		for (int i = 9; i >= 0; i--)
+		{
+			if ((score % 1000) >= i * 100) {
+				number4_[i]->Draw();
+				break;
+			}
+		}
+		for (int i = 9; i >= 0; i--)
+		{
+			if ((score % 10000) >= i * 1000) {
+				number3_[i]->Draw();
+				break;
+			}
+		}
+		number6_[0]->Draw();
+
+
 		break;
 	case INFO:
 	case GAME:
@@ -556,6 +591,7 @@ void GameScene::CheckAllCollisions() {
 				// 敵弾の衝突時コールバックを呼び出す
 				item_->AddItem(food->GetTribe());
 				food->OnCollision();
+				score += 10;
 			}
 		}
 	}
@@ -578,6 +614,7 @@ void GameScene::CheckAllCollisions() {
 					enemy->OnCollision();
 					// 弾の衝突時コールバックを呼び出す
 					bullet->OnCollision();
+					score += 10;
 				}
 			}
 		}
